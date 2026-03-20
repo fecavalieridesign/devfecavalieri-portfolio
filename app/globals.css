@@ -1,26 +1,477 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* ── KPRverse × Zentry palette ── */
+  --color-bg:       #000000;          /* pure black — KPRverse */
+  --color-surface:  #0c0c0c;          /* barely-there surface */
+  --color-text:     #ffffff;
+  --color-muted:    rgba(255,255,255,0.35);
+  --color-border:   rgba(255,255,255,0.07);
+  --color-violet:     #a855f7;          /* electric violet accent */
+  --color-violet-dim: rgba(168,85,247,0.12);
+
+  /* ── Fonts ── */
+  --font-display: var(--font-archivo-black);  /* solid, strong display */
+  --font-body:    var(--font-onest);      /* clean grotesque */
+  --font-mono:    var(--font-space-mono), 'Courier New', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --ease-out-quart:  cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-expo:   cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-extreme:    cubic-bezier(1, 0, 0, 1);
+  --ease-snap:       cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-zentry:     cubic-bezier(0.65, 0.05, 0.36, 1);
+  --ease-sine:       cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  --sidebar-w:       60px;
+}
+
+html {
+  overflow-x: clip; /* clip não cria scroll container — não quebra position:sticky */
+  background-color: #000;
+  transition: background-color 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+  color: #fff;
+  font-family: var(--font-body), sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: clip;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body), sans-serif;
+}
+
+/* Noise overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ── Keyframes ── */
+@keyframes blink {
+  0%, to { opacity: 0.2; }
+  50%     { opacity: 1; }
+}
+
+@keyframes cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, to  { opacity: 0; }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate3d(1, 1, 0, 360deg); }
+}
+
+@keyframes spin-clockwise {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes spin-ccw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes flicker {
+  0%            { opacity: 0 }
+  60%           { opacity: 1 }
+  62%, 66%, 68% { opacity: 0 }
+  70%, to       { opacity: 1 }
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 0.15; }
+  8%        { opacity: 1; }
+  12%       { opacity: 0.1; }
+  18%       { opacity: 1; }
+  75%       { opacity: 1; }
+}
+
+@keyframes scan-h {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(100vh); }
+}
+
+/* Typing line — grows from 0 width */
+@keyframes type-in {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* SVG stroke draw — KPRverse / Zentry */
+@keyframes draw-stroke {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* Shimmer sweep — skeleton loading */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(300%)  skewX(-12deg); }
+}
+
+/* Line redraw — left to right reveal */
+@keyframes redraw {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0%   0 0); }
+}
+
+/* CSS Blob morph — Zentry organic shapes */
+@keyframes blob-morph {
+  0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+  25%       { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
+  50%       { border-radius: 50% 50% 30% 70% / 50% 70% 30% 50%; }
+  75%       { border-radius: 30% 70% 60% 40% / 70% 40% 50% 60%; }
+}
+
+/* Scanline animation — CRT monitor effect */
+@keyframes scanline {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(100vh); }
+}
+
+.animate-scanline {
+  animation: scanline 4s linear infinite;
+}
+
+/* ── Utilities ── */
+.blink-dot {
+  display: inline-block;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 50%;
+  background: currentColor;
+  animation: blink 1.2s step-start infinite;
+  flex-shrink: 0;
+}
+
+.cursor-blink {
+  animation: cursor-blink 1s step-start infinite;
+}
+
+.gpu {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Shell border — KPRverse "the-frame" pattern */
+.shell {
+  position: absolute;
+  inset: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Reduced motion — WCAG 2.3.3 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible — WCAG 2.4.7 keyboard navigation */
+:focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.focus\:not-sr-only:focus {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: revert;
+  margin: revert;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Scrollbar hidden — KPRverse */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
+
+/* Selection */
+::selection {
+  background: rgba(168, 85, 247, 0.25);
+  color: #fff;
+}
+
+/* Skeleton shimmer utility */
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.035) 50%, transparent 100%);
+  animation: shimmer-sweep 2s ease-in-out infinite;
+}
+
+/* Violet underline hover utility */
+.violet-underline {
+  position: relative;
+}
+.violet-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #a855f7;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.violet-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* ─── ScrollIntoCard — Zentry-style sticky scroll section ─── */
+
+.itc-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.itc-viewport {
+  position: relative;
+  width: min(100%, 92rem);
+  height: min(100%, 68rem);
+  overflow: hidden;
+  border: 1px solid rgba(168,85,247,0.08);
+  border-radius: clamp(2.2rem, 3.6vw, 3.4rem);
+  background: transparent;
+}
+
+.itc-viewport::before {
+  content: "";
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid rgba(168,85,247,0.05);
+  border-radius: clamp(1.8rem, 3vw, 2.8rem);
+  pointer-events: none;
+}
+
+.itc-card-shell {
+  position: absolute;
+  inset: -16% -8% -4%;
+  display: flex;
+  justify-content: center;
+}
+
+.itc-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  height: 16%;
+  width: min(92vw, 56rem);
+  translate: -50% 0;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(168,85,247,0.18), transparent 72%);
+  filter: blur(24px);
+}
+
+.itc-card {
+  position: relative;
+  width: clamp(28rem, 96vw, 88rem);
+  max-width: 110%;
+  aspect-ratio: 0.72;
+  overflow: hidden;
+  border-radius: clamp(2.6rem, 4.6vw, 4rem);
+  background:
+    radial-gradient(circle at 56% 18%, rgba(255,255,255,0.06), transparent 18%),
+    linear-gradient(180deg, #04000e 0%, #06001a 100%);
+  box-shadow:
+    0 40px 140px rgba(80,0,120,0.3),
+    0 0 0 1px rgba(168,85,247,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  transform-origin: center top;
+}
+
+.itc-card::before {
+  content: "";
+  position: absolute;
+  inset: 2rem 2rem auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168,85,247,0.28), transparent);
+  opacity: 0.8;
+}
+
+.itc-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 110%, rgba(168,85,247,0.14), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), transparent 26%);
+  pointer-events: none;
+}
+
+.itc-card__edge {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(168,85,247,0.07);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.itc-card__orb {
+  position: absolute;
+  left: 50%;
+  top: 9%;
+  aspect-ratio: 1;
+  width: 30%;
+  translate: -50% 0;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 50% 44%,
+    rgba(220,160,255,0.96) 0%,
+    rgba(168,85,247,0.72) 38%,
+    rgba(14,0,40,0.7) 70%,
+    rgba(14,0,40,0) 72%
+  );
+  filter: blur(10px);
+  box-shadow: 0 0 90px rgba(168,85,247,0.28);
+}
+
+.itc-card__mesh {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(168,85,247,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,85,247,0.06) 1px, transparent 1px);
+  background-size: 1.8rem 1.8rem;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+}
+
+.itc-card__strata {
+  position: absolute;
+  left: -8%;
+  right: -4%;
+  border-radius: 9999px;
+  filter: blur(9px);
+  pointer-events: none;
+}
+
+.itc-card__strata--one {
+  top: 56%;
+  height: 11%;
+  rotate: 8deg;
+  background: linear-gradient(90deg, transparent, rgba(168,85,247,0.22), rgba(192,132,252,0.28), transparent);
+  opacity: 0.5;
+}
+
+.itc-card__strata--two {
+  top: 72%;
+  height: 9%;
+  rotate: -10deg;
+  background: linear-gradient(90deg, transparent, rgba(120,50,200,0.18), rgba(168,85,247,0.22), transparent);
+  opacity: 0.42;
+}
+
+.itc-hand {
+  position: absolute;
+  inset: auto 0 -4% 0;
+  display: flex;
+  height: 50%;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(0.9rem, 2vw, 1.8rem);
+  padding-inline: 14%;
+}
+
+.itc-finger {
+  position: relative;
+  display: block;
+  width: 18%;
+  min-width: 3.2rem;
+  overflow: hidden;
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 999px 999px 1.8rem 1.8rem;
+  background: linear-gradient(180deg, rgba(60,20,100,0.92), rgba(10,0,30,0.96));
+  box-shadow:
+    inset 0 0 24px rgba(168,85,247,0.06),
+    0 0 32px rgba(168,85,247,0.10);
+}
+
+.itc-finger::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg, rgba(200,160,255,0.5) 0 2px, transparent 2px 15px);
+  opacity: 0.52;
+  mix-blend-mode: screen;
+}
+
+.itc-finger::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(168,85,247,0.15) 100%);
+}
+
+.itc-finger--1 { height: 58%; translate: 0 7%; }
+.itc-finger--2 { height: 86%; }
+.itc-finger--3 { height: 80%; translate: 0 10%; }
+.itc-finger--4 { height: 52%; translate: 0 22%; }
+
+.itc-card__grain {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 108%, rgba(168,85,247,0.10), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), transparent 20%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+@media (max-width: 1023px) {
+  .itc-viewport {
+    height: min(100%, 48rem);
+  }
+  .itc-card-shell {
+    inset: -8% -4% 0;
+  }
+  .itc-card {
+    max-width: 104%;
+  }
+  .itc-shadow {
+    width: min(88vw, 26rem);
+  }
 }

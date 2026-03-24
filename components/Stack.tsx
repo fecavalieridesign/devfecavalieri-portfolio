@@ -60,6 +60,132 @@ const stackData: StackCard[] = [
   },
 ];
 
+// ── Mobile: vertical accordion list (utopiatokyo-inspired) ───────────────────
+function MobileStack({ cards, lang, shouldReduceMotion }: {
+  cards: StackCard[];
+  lang: string;
+  shouldReduceMotion: boolean | null;
+}) {
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <div className="divide-y divide-white/[0.06]">
+      {cards.map((card, i) => {
+        const isOpen = open === i;
+        const title = lang === "pt" ? card.titlePt : card.title;
+        const desc = lang === "pt" ? card.descPt : card.desc;
+
+        return (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-32px" }}
+            transition={{ duration: 0.5, delay: i * 0.07, ease: [0.65, 0.05, 0.36, 1] }}
+          >
+            <button
+              className="w-full flex items-center gap-4 py-5 text-left group"
+              onClick={() => setOpen(isOpen ? null : i)}
+              aria-expanded={isOpen}
+            >
+              {/* Index */}
+              <span
+                className="font-mono text-[9px] tracking-[0.2em] shrink-0"
+                style={{ color: "rgba(168,85,247,0.45)" }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              {/* Icon */}
+              <motion.span
+                className="text-lg shrink-0"
+                style={{ color: "#a855f7" }}
+                animate={{ scale: isOpen ? 1.15 : 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {card.icon}
+              </motion.span>
+
+              {/* Title */}
+              <span
+                className="flex-1 font-display font-extrabold uppercase leading-none"
+                style={{
+                  fontSize: "clamp(1.1rem, 5vw, 1.4rem)",
+                  letterSpacing: "-0.02em",
+                  color: isOpen ? "#fff" : "rgba(255,255,255,0.65)",
+                  transition: "color 0.25s",
+                }}
+              >
+                {title}
+              </span>
+
+              {/* Arrow */}
+              <motion.span
+                className="font-mono text-xs shrink-0"
+                style={{ color: "rgba(168,85,247,0.5)" }}
+                animate={{ rotate: isOpen ? 90 : 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                →
+              </motion.span>
+            </button>
+
+            {/* Expanding line accent */}
+            <motion.div
+              className="h-px rounded-full mb-0"
+              style={{ backgroundColor: "rgba(168,85,247,0.4)" }}
+              animate={{ scaleX: isOpen ? 1 : 0, originX: 0 }}
+              transition={{ duration: 0.3, ease: [0.65, 0.05, 0.36, 1] }}
+            />
+
+            {/* Accordion body */}
+            <AnimatePresence initial={false}>
+              {isOpen && (
+                <motion.div
+                  key="body"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: [0.65, 0.05, 0.36, 1] }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <div className="pb-5 pt-3 pl-10">
+                    <p
+                      className="text-xs leading-relaxed mb-4"
+                      style={{
+                        fontFamily: "var(--font-onest)",
+                        color: "rgba(255,255,255,0.5)",
+                      }}
+                    >
+                      {desc}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {card.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="text-[8px] px-2 py-1 rounded-full"
+                          style={{
+                            fontFamily: "var(--font-space-mono)",
+                            backgroundColor: "rgba(168,85,247,0.1)",
+                            color: "rgba(168,85,247,0.9)",
+                            border: "1px solid rgba(168,85,247,0.2)",
+                          }}
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Stack() {
   const [isSpread, setIsSpread] = useState(false);
   const [activeCard, setActiveCard] = useState<number | null>(null);
@@ -87,10 +213,10 @@ export default function Stack() {
       zIndex: cards.length - i,
     }),
     spread: (i: number) => ({
-      x: isMobile ? (i - 2) * 58 : (i - 2) * 120,
+      x: isMobile ? (i - 2) * 44 : (i - 2) * 120,
       y: 0,
       rotate: 0,
-      scale: isMobile ? 0.78 : 1,
+      scale: isMobile ? 0.72 : 1,
       zIndex: 10,
     }),
   };
@@ -108,7 +234,7 @@ export default function Stack() {
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
         <SectionLabel label="[003_STACK]" />
 
         {/* Heading */}
@@ -147,16 +273,20 @@ export default function Stack() {
           </span>
         </motion.p>
 
-        {/* Card Stack */}
+        {/* Mobile: vertical accordion */}
+        <div className="md:hidden">
+          <MobileStack cards={cards} lang={lang} shouldReduceMotion={shouldReduceMotion} />
+        </div>
+
+        {/* Desktop: card stack deck */}
         <motion.div
-          className="relative flex items-center justify-center py-16 cursor-pointer md:cursor-default"
-          style={{ width: "100%", maxWidth: "700px", margin: "0 auto", minHeight: "500px" }}
+          className="hidden md:flex relative items-center justify-center py-16 cursor-default overflow-hidden"
+          style={{ width: "100%", maxWidth: "700px", margin: "0 auto", minHeight: "360px", maxHeight: "80vh" }}
           onHoverStart={() => setIsSpread(true)}
           onHoverEnd={() => {
             setIsSpread(false);
             setActiveCard(null);
           }}
-          onClick={() => setIsSpread(!isSpread)}
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -203,14 +333,14 @@ export default function Stack() {
               }}
             >
               <motion.div
-                className="relative w-[180px] md:w-[200px] h-[300px] md:h-[320px] rounded-2xl overflow-hidden"
+                className="relative w-[200px] h-[320px] rounded-2xl overflow-hidden"
                 style={{
                   background: activeCard === index
                     ? "linear-gradient(145deg, #1a0a2e 0%, #0c0c0c 100%)"
                     : "#0c0c0c",
                   border: `1px solid ${
-                    activeCard === index 
-                      ? "rgba(168,85,247,0.5)" 
+                    activeCard === index
+                      ? "rgba(168,85,247,0.5)"
                       : "rgba(168,85,247,0.15)"
                   }`,
                   boxShadow: activeCard === index
@@ -219,7 +349,7 @@ export default function Stack() {
                 }}
               >
                 {/* Violet gradient top */}
-                <motion.div 
+                <motion.div
                   className="absolute top-0 left-0 right-0 h-32"
                   style={{
                     background: "linear-gradient(180deg, rgba(168,85,247,0.12) 0%, transparent 100%)",
@@ -228,7 +358,7 @@ export default function Stack() {
                 />
 
                 {/* Corner accent */}
-                <div 
+                <div
                   className="absolute top-4 left-4 w-6 h-6 rounded-full flex items-center justify-center"
                   style={{
                     backgroundColor: "rgba(168,85,247,0.15)",
@@ -244,8 +374,8 @@ export default function Stack() {
                 <div className="relative h-full flex flex-col justify-between p-5">
                   {/* Icon */}
                   <motion.div
-                    className="text-3xl md:text-4xl mt-8"
-                    animate={{ 
+                    className="text-4xl mt-8"
+                    animate={{
                       scale: activeCard === index ? 1.15 : 1,
                       y: activeCard === index ? -5 : 0,
                     }}
@@ -258,7 +388,7 @@ export default function Stack() {
                   {/* Text */}
                   <div>
                     <motion.h3
-                      className="text-lg md:text-xl font-bold mb-2"
+                      className="text-xl font-bold mb-2"
                       style={{
                         fontFamily: "var(--font-archivo-black)",
                         color: "#fff",
@@ -266,7 +396,7 @@ export default function Stack() {
                     >
                       {card.title}
                     </motion.h3>
-                    
+
                     <AnimatePresence>
                       {activeCard === index && (
                         <motion.p
@@ -291,10 +421,10 @@ export default function Stack() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: activeCard === index ? 1 : 0.5 }}
                     >
-                      {card.skills.map((skill, i) => (
+                      {card.skills.map((skill) => (
                         <span
                           key={skill}
-                          className="text-[8px] md:text-[9px] px-2 py-1 rounded-full"
+                          className="text-[9px] px-1.5 py-0.5 rounded-full"
                           style={{
                             fontFamily: "var(--font-space-mono)",
                             backgroundColor: "rgba(168,85,247,0.1)",
@@ -322,7 +452,7 @@ export default function Stack() {
           ))}
         </motion.div>
 
-        {/* Hint text — desktop */}
+        {/* Hint text — desktop only */}
         <motion.p
           className="hidden md:block text-center mt-12 text-xs"
           style={{
@@ -334,11 +464,6 @@ export default function Stack() {
         >
           {lang === "pt" ? "Hover para interagir" : "Hover to interact"}
         </motion.p>
-
-        {/* Mobile hint */}
-        <p className="md:hidden text-center mt-4 text-xs" style={{ fontFamily: "var(--font-space-mono)", color: "rgba(255,255,255,0.25)" }}>
-          Toque para interagir
-        </p>
       </div>
     </section>
   );

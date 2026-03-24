@@ -80,28 +80,28 @@ function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: n
         onMouseMove={onMove}
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
-        className="group relative flex flex-col md:flex-row overflow-hidden cursor-pointer h-[460px] md:h-[45vh] w-[80vw] md:w-[55vw] lg:w-[45vw] flex-shrink-0"
+        className="group relative flex flex-col md:flex-row overflow-hidden cursor-pointer h-[420px] sm:h-[460px] md:h-[45vh] w-[90vw] sm:w-[85vw] md:w-[55vw] lg:w-[45vw] flex-shrink-0"
       >
         {/* Texto — esquerda */}
-        <div className="flex flex-col p-5 md:p-10 md:w-[38%] shrink-0" style={{ transform: "translateZ(16px)" }}>
+        <div className="flex flex-col p-4 sm:p-6 md:p-10 md:w-[38%] shrink-0" style={{ transform: "translateZ(16px)" }}>
           {/* Year badge */}
-          <div className="flex items-center gap-2 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet/60" />
-            <span className="font-mono text-[9px] text-black/40 tracking-widest">
+          <div className="flex items-center gap-2 mb-4 sm:mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet/60 flex-shrink-0" />
+            <span className="font-mono text-[8px] sm:text-[9px] text-black/40 tracking-widest">
               {project.year}
             </span>
           </div>
 
-          <p className="font-mono text-[9px] tracking-[0.2em] text-black/35 uppercase mb-4">{project.label}</p>
+          <p className="font-mono text-[8px] sm:text-[9px] tracking-[0.2em] text-black/35 uppercase mb-3 sm:mb-4">{project.label}</p>
           
           <h3
-            className="font-display font-extrabold text-black leading-[0.88] mb-4"
-            style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.6rem)", letterSpacing: "-0.03em" }}
+            className="font-display font-extrabold text-black leading-[0.88] mb-2 sm:mb-4"
+            style={{ fontSize: "clamp(1.2rem, 2.8vw, 2.6rem)", letterSpacing: "-0.03em" }}
           >
             {project.name}
           </h3>
-          
-          <p className="font-mono text-[0.78rem] text-black/45 leading-relaxed mb-8">
+
+          <p className="font-mono text-[0.7rem] sm:text-[0.78rem] text-black/45 leading-relaxed mb-4 sm:mb-8">
             {project.description}
           </p>
           
@@ -109,15 +109,15 @@ function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: n
             {project.tags.map((t) => (
               <span
                 key={t}
-                className="font-mono text-[8px] text-black/40 border border-black/10 px-2 py-1 rounded-sm"
+                className="font-mono text-[7px] sm:text-[8px] text-black/40 border border-black/10 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-sm"
               >
                 {t}
               </span>
             ))}
           </div>
           
-          <div className="mt-6 flex items-center gap-2 font-mono text-[9px] text-black/30 group-hover:text-black/60 transition-all duration-300">
-            <span>VISITAR SITE</span>
+          <div className="mt-4 sm:mt-6 flex items-center gap-2 font-mono text-[8px] sm:text-[9px] text-black/30 group-hover:text-black/60 transition-all duration-300">
+            <span>VER</span>
             <motion.span
               animate={{ x: shouldReduceMotion ? 0 : (hovered ? 3 : 0), y: shouldReduceMotion ? 0 : (hovered ? -3 : 0) }}
               transition={{ duration: 0.25 }}
@@ -126,7 +126,7 @@ function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: n
         </div>
 
         {/* Screenshot — direita */}
-        <div className="relative flex-1 min-h-[200px] md:min-h-0 overflow-hidden" style={{ borderRadius: "0 1.1rem 1.1rem 0" }}>
+        <div className="relative flex-1 min-h-[200px] md:min-h-0 overflow-hidden rounded-b-[1.1rem] md:rounded-b-none md:rounded-r-[1.1rem]">
           <Image
             src={project.image}
             alt={`Screenshot do projeto ${project.name}`}
@@ -173,19 +173,19 @@ export default function WorkHorizontal() {
     <section
       id="work"
       ref={containerRef}
-      className="relative"
+      className="relative overflow-x-hidden"
       style={{
         background: "#e4e4f0"
       }}
     >
       {/* ── DESKTOP: scroll-driven sticky horizontal ── */}
       <div
-        className="hidden md:block"
+        className="hidden lg:block"
         style={{ height: "350vh" }}
       >
         <div className="sticky top-0 h-screen overflow-hidden">
           {/* Header */}
-          <div className="absolute top-0 left-0 right-0 z-10 pt-12 pb-8 px-6 md:px-12">
+          <div className="absolute top-0 left-0 right-0 z-10 pt-8 sm:pt-10 md:pt-12 pb-6 sm:pb-7 md:pb-8 px-4 sm:px-6 md:px-12">
             <div className="max-w-6xl mx-auto flex items-end justify-between">
               <div>
                 <SectionLabel label="[001_WORK]" dividerColor="bg-black/[0.06]" className="mb-6" />
@@ -206,7 +206,7 @@ export default function WorkHorizontal() {
               </div>
 
               {/* Progress bar */}
-              <div className="hidden md:flex items-center gap-3">
+              <div className="hidden lg:flex items-center gap-3">
                 <span className="font-mono text-[9px] text-black/30 tracking-wider">PROGRESS</span>
                 <div className="w-24 h-[2px] bg-black/10 rounded-full overflow-hidden">
                   <motion.div
@@ -278,9 +278,9 @@ export default function WorkHorizontal() {
       </div>
 
       {/* ── MOBILE: touch-scrollable vertical stack ── */}
-      <div className="md:hidden py-16 px-5">
+      <div className="lg:hidden py-12 sm:py-14 px-4 sm:px-5">
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-8 sm:mb-10">
           <SectionLabel label="[001_WORK]" dividerColor="bg-black/[0.06]" className="mb-6" />
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -297,12 +297,14 @@ export default function WorkHorizontal() {
         {/* Touch-scroll horizontal track */}
         <div
           ref={mobileTrackRef}
-          className="flex gap-5 overflow-x-auto pb-6"
+          data-testid="mobile-work-track"
+          className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 sm:pb-6"
           style={{
             scrollSnapType: "x mandatory",
             WebkitOverflowScrolling: "touch",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
+            touchAction: "pan-x",
           }}
         >
           {PROJECTS.map((project, index) => (
@@ -338,7 +340,7 @@ export default function WorkHorizontal() {
         </div>
 
         {/* Swipe hint */}
-        <div className="flex items-center justify-center gap-2 mt-2 text-black/30">
+        <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4 text-black/30">
           <motion.span
             animate={{ x: [0, 6, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}

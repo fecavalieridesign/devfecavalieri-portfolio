@@ -70,7 +70,7 @@ export default function Contact() {
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
         <SectionLabel label="[006_CONTACT]" dividerColor="bg-black/[0.08]" />
 
         {/* Terminal prompt heading */}

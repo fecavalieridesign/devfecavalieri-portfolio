@@ -49,7 +49,10 @@ export default function Nav() {
   return (
     <>
       {/* ══ DESKTOP SIDEBAR ══════════════════════════════════════ */}
-      <aside className="fixed left-0 top-0 h-screen w-[60px] border-r border-white/[0.06] z-50 hidden md:flex flex-col items-center py-7 gap-5 bg-black overflow-hidden">
+      <aside
+        data-testid="desktop-nav"
+        className="fixed left-0 top-0 h-screen w-[60px] border-r border-white/[0.06] z-50 hidden lg:flex flex-col items-center py-7 gap-5 bg-black overflow-hidden"
+      >
         {/* Scroll progress — thin lime line grows from top */}
         <motion.div
           style={{ scaleY, transformOrigin: "top" }}
@@ -104,7 +107,8 @@ export default function Nav() {
       <button
         onClick={() => setMobileOpen(true)}
         aria-label="Abrir menu de navegação"
-        className="fixed top-4 right-4 z-50 flex md:hidden flex-col justify-center items-center gap-[5px] w-11 h-11"
+        data-testid="mobile-menu-button"
+        className="fixed top-4 right-4 z-50 flex lg:hidden flex-col justify-center items-center gap-[5px] w-11 h-11"
         style={{ mixBlendMode: "difference" }}
       >
         <span className="block h-[1.5px] w-5 bg-white" />
@@ -116,6 +120,7 @@ export default function Nav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            data-testid="mobile-nav-overlay"
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
@@ -133,6 +138,7 @@ export default function Nav() {
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Fechar menu"
+                data-testid="mobile-menu-close"
                 className="flex flex-col justify-center items-center gap-[5px] min-h-[44px] min-w-[44px] px-2 group"
               >
                 {/* X icon from crossed bars */}

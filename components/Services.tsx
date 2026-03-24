@@ -306,7 +306,7 @@ function LargeCard({ card }: { card: { id: string; title: string; desc: string }
       onMouseLeave={onLeave}
       animate={{ rotateX: tilt.x, rotateY: tilt.y, scale: hovered ? 0.99 : 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 26 }}
-      className="relative border border-white/[0.07] hover:border-violet/25 bg-black overflow-hidden transition-colors duration-500 group min-h-[280px] md:min-h-[360px]"
+      className="relative border border-white/[0.07] hover:border-violet/25 bg-black overflow-hidden transition-colors duration-500 group min-h-[240px] sm:min-h-[300px] md:min-h-[360px]"
       style={{ transformStyle: "preserve-3d" }}
     >
       <IsoVisual />
@@ -319,7 +319,7 @@ function LargeCard({ card }: { card: { id: string; title: string; desc: string }
       />
 
       {/* Content — left side */}
-      <div className="relative z-10 flex flex-col justify-between h-full p-6 md:p-10 md:w-1/2" style={{ minHeight: 280 }}>
+      <div className="relative z-10 flex flex-col justify-between h-full p-4 sm:p-6 md:p-10 md:w-1/2" style={{ minHeight: 280 }}>
         <div>
           {/* Label */}
           <div className="flex items-center gap-3 mb-6">
@@ -383,7 +383,7 @@ function SmallCard({
       onMouseLeave={onLeave}
       animate={{ rotateX: tilt.x, rotateY: tilt.y, scale: hovered ? 0.985 : 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 26 }}
-      className="relative border border-white/[0.07] hover:border-violet/25 bg-black overflow-hidden transition-colors duration-500 group min-h-[320px] md:min-h-[440px]"
+      className="relative border border-white/[0.07] hover:border-violet/25 bg-black overflow-hidden transition-colors duration-500 group min-h-[360px] md:min-h-[440px]"
       style={{ transformStyle: "preserve-3d" }}
     >
       {/* Visual fills bottom 55% */}
@@ -396,7 +396,7 @@ function SmallCard({
       />
 
       {/* Content — top area */}
-      <div className="relative z-10 p-7">
+      <div className="relative z-10 p-4 sm:p-6 md:p-7">
         <div className="flex items-center gap-3 mb-5">
           <span className="font-mono text-[8px] text-violet/40 tracking-[0.2em]">0{index + 2}</span>
         </div>
@@ -420,8 +420,8 @@ export default function Services() {
   const { t } = useLanguage();
 
   return (
-    <section id="services" className="relative py-24 md:py-36 border-t border-white/[0.05]">
-      <div className="max-w-6xl mx-auto px-6 md:px-12">
+    <section id="services" className="relative py-16 sm:py-20 md:py-36 border-t border-white/[0.05]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
 
         <SectionLabel label="[002_SERVICES]" />
 

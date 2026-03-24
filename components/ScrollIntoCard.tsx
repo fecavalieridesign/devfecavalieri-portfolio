@@ -113,15 +113,15 @@ export default function ScrollIntoCard() {
               ? undefined
               : { y: titleY, opacity: titleOp }
           }
-          className="absolute inset-x-0 top-[9%] z-20 px-6 text-center md:px-12"
+          className="absolute inset-x-0 top-[6%] sm:top-[8%] md:top-[9%] z-20 px-4 sm:px-6 md:px-12 text-center"
         >
-          <p className="mb-3 font-mono text-[9px] tracking-[0.24em] uppercase text-white/50">
+          <p className="mb-2 sm:mb-3 font-mono text-[8px] sm:text-[9px] tracking-[0.24em] uppercase text-white/50">
             WELCOME TO MY WORLD
           </p>
           <h2
             className="font-display font-black uppercase text-white"
             style={{
-              fontSize: "clamp(2rem, 6.5vw, 6rem)",
+              fontSize: "clamp(1.5rem, 6.5vw, 6rem)",
               letterSpacing: "-0.045em",
               lineHeight: 0.9,
               textShadow: "0 2px 32px rgba(0,0,0,0.18)",
@@ -129,7 +129,7 @@ export default function ScrollIntoCard() {
           >
             Código que as<br />pessoas sentem.
           </h2>
-          <p className="mx-auto mt-5 max-w-md text-sm leading-7 text-white/55">
+          <p className="mx-auto mt-3 sm:mt-5 max-w-md text-xs sm:text-sm leading-6 sm:leading-7 text-white/55">
             Suporte técnico, customer success e front-end — cada parte reforça a outra.
           </p>
         </motion.div>

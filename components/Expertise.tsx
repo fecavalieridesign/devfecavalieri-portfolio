@@ -15,7 +15,7 @@ export default function Expertise() {
 
   return (
     <section id="expertise" className="relative py-24 md:py-36 border-t border-white/[0.05]">
-      <div className="max-w-6xl mx-auto px-6 md:px-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
 
         <SectionLabel label="[005_SKILLS]" />
 

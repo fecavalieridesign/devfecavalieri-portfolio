@@ -91,7 +91,7 @@ function ConsoleWindow() {
       </div>
 
       {/* Terminal body */}
-      <div className="p-4 font-mono" style={{ minHeight: 200 }} role="log" aria-live="polite" aria-atomic="false" aria-label="Terminal de apresentação">
+      <div className="p-4 font-mono min-h-[140px] sm:min-h-[200px]" role="log" aria-live="polite" aria-atomic="false" aria-label="Terminal de apresentação">
         {shown.map((line, i) => (
           <div key={i} className="flex gap-3 mb-1.5">
             <span className="text-violet/70 shrink-0">›</span>
@@ -209,7 +209,7 @@ export default function Hero() {
     <section
       ref={ref}
       id="hero"
-      className="relative min-h-screen flex flex-col justify-start md:justify-end pb-16 md:pb-24 pt-28 md:pt-0"
+      className="relative min-h-screen flex flex-col justify-start md:justify-end pb-12 sm:pb-16 md:pb-24 pt-20 sm:pt-24 md:pt-0 px-4 sm:px-6"
       style={{ background: "#030308" }}
     >
       {/* ── LAYER 1: Zentry polygon clip-path expand ─────────────────── */}
@@ -277,7 +277,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, ease: E, delay: 3.0 }}
-        className="absolute top-16 md:top-8 left-6 md:left-10 flex items-center gap-2.5"
+        className="absolute top-12 sm:top-14 md:top-8 left-4 sm:left-6 md:left-10 flex items-center gap-2.5"
         style={{ zIndex: 5 }}
       >
         <span className="blink-dot text-violet" />
@@ -289,7 +289,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3.2, duration: 1 }}
-        className="absolute top-16 md:top-8 right-6 md:right-10 font-mono text-[8px] text-white/10 tracking-[0.3em] uppercase hidden md:block"
+        className="absolute top-12 sm:top-14 md:top-8 right-4 sm:right-6 md:right-10 font-mono text-[6px] sm:text-[7px] md:text-[8px] text-white/10 tracking-[0.3em] uppercase"
         style={{ zIndex: 3 }}
       >
         DEVFC — 2026
@@ -299,10 +299,14 @@ export default function Hero() {
       <div style={{ perspective: "1200px", perspectiveOrigin: "50% 100%", position: "relative", zIndex: 3 }}>
         <motion.div
           style={{ y: textY, rotateX, scale, opacity, transformOrigin: "50% 100%", willChange: "transform, opacity" }}
-          className="relative px-6 md:px-12 max-w-7xl mx-auto w-full"
+          className="relative px-0 sm:px-6 md:px-12 max-w-7xl mx-auto w-full"
         >
           {/* Giant name — Zentry animated-word 3D flip */}
-          <h1 className="mb-10 md:mb-12 font-display font-extrabold uppercase leading-[0.85]" style={{ perspective: "1200px", letterSpacing: "-0.04em" }}>
+          <h1
+            data-testid="hero-title"
+            className="mb-6 sm:mb-8 md:mb-12 font-display font-extrabold uppercase leading-[0.85]"
+            style={{ perspective: "1200px", letterSpacing: "-0.04em" }}
+          >
             <div className="overflow-visible">
               <span
                 className="block text-white"
@@ -328,7 +332,7 @@ export default function Hero() {
           </h1>
 
           {/* Bottom row: role + console */}
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8">
+          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-3 sm:gap-5 lg:gap-8">
             {/* Left: role + CTA */}
             <div className="max-w-sm">
               <motion.p
@@ -343,7 +347,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: E, delay: 3.6 }}
-                className="font-body text-sm text-white/60 leading-relaxed mb-8"
+                className="font-body text-sm text-white/60 leading-relaxed mb-4 sm:mb-8"
               >
                 {t.hero.description}
               </motion.p>
@@ -383,7 +387,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 4.5, duration: 1 }}
-        className="absolute bottom-7 left-6 md:left-10 flex items-center gap-3"
+        className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-10 flex items-center gap-2 sm:gap-3"
         style={{ zIndex: 3 }}
       >
         <div className="relative w-7 h-7 flex items-center justify-center">
@@ -402,7 +406,7 @@ export default function Hero() {
           <motion.div animate={{ y: [0, 4, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="w-px h-3 bg-gradient-to-b from-violet/60 to-transparent" />
         </div>
-        <span className="font-mono text-[8px] text-white/40 tracking-[0.3em] uppercase">SCROLL</span>
+        <span className="font-mono text-[7px] sm:text-[8px] text-white/40 tracking-[0.3em] uppercase hidden sm:inline">SCROLL</span>
       </motion.div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Nav from "@/components/Nav";
@@ -23,8 +23,18 @@ const ScrollIntoCard = dynamic(() => import("@/components/ScrollIntoCard"), {
   ssr: false,
 });
 
+
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    if (searchParams.has("e2e")) {
+      setIsLoading(false);
+    }
+  }, []);
 
   return (
     <LanguageProvider>
@@ -37,12 +47,12 @@ export default function Home() {
       <ScrollBg />
       <Nav />
       
-      {/* md:ml-[60px] accounts for fixed sidebar on desktop */}
-      <main id="main-content" className="md:ml-[60px]">
+      {/* lg:ml-[60px] accounts for the fixed sidebar once desktop layout activates */}
+      <main id="main-content" className="lg:ml-[60px]">
         <Hero />
         
         {/* ScrollIntoCard: sticky 3D animation — desktop only, not usable on touch */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <ScrollIntoCard />
         </div>
         

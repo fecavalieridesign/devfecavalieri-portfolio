@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
+import { motion, useReducedMotion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -69,120 +69,127 @@ function MobileStack({ cards, lang, shouldReduceMotion }: {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <div className="divide-y divide-white/[0.06]">
-      {cards.map((card, i) => {
-        const isOpen = open === i;
-        const title = lang === "pt" ? card.titlePt : card.title;
-        const desc = lang === "pt" ? card.descPt : card.desc;
+    <LayoutGroup>
+      <div className="divide-y divide-white/[0.06]">
+        {cards.map((card, i) => {
+          const isOpen = open === i;
+          const title = lang === "pt" ? card.titlePt : card.title;
+          const desc = lang === "pt" ? card.descPt : card.desc;
 
-        return (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-32px" }}
-            transition={{ duration: 0.5, delay: i * 0.07, ease: [0.65, 0.05, 0.36, 1] }}
-          >
-            <button
-              className="w-full flex items-center gap-4 py-5 text-left group"
-              onClick={() => setOpen(isOpen ? null : i)}
-              aria-expanded={isOpen}
-            >
-              {/* Index */}
-              <span
-                className="font-mono text-[9px] tracking-[0.2em] shrink-0"
-                style={{ color: "rgba(168,85,247,0.45)" }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-
-              {/* Icon */}
-              <motion.span
-                className="text-lg shrink-0"
-                style={{ color: "#a855f7" }}
-                animate={{ scale: isOpen ? 1.15 : 1 }}
-                transition={{ duration: 0.2 }}
-              >
-                {card.icon}
-              </motion.span>
-
-              {/* Title */}
-              <span
-                className="flex-1 font-display font-extrabold uppercase leading-none"
-                style={{
-                  fontSize: "clamp(1.1rem, 5vw, 1.4rem)",
-                  letterSpacing: "-0.02em",
-                  color: isOpen ? "#fff" : "rgba(255,255,255,0.65)",
-                  transition: "color 0.25s",
-                }}
-              >
-                {title}
-              </span>
-
-              {/* Arrow */}
-              <motion.span
-                className="font-mono text-xs shrink-0"
-                style={{ color: "rgba(168,85,247,0.5)" }}
-                animate={{ rotate: isOpen ? 90 : 0 }}
-                transition={{ duration: 0.25 }}
-              >
-                →
-              </motion.span>
-            </button>
-
-            {/* Expanding line accent */}
+          return (
             <motion.div
-              className="h-px rounded-full mb-0"
-              style={{ backgroundColor: "rgba(168,85,247,0.4)" }}
-              animate={{ scaleX: isOpen ? 1 : 0, originX: 0 }}
-              transition={{ duration: 0.3, ease: [0.65, 0.05, 0.36, 1] }}
-            />
-
-            {/* Accordion body */}
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  key="body"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.35, ease: [0.65, 0.05, 0.36, 1] }}
-                  style={{ overflow: "hidden" }}
+              key={i}
+              layout
+              transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-24px" }}
+            >
+              <button
+                className="w-full flex items-center gap-4 py-5 text-left"
+                onClick={() => setOpen(isOpen ? null : i)}
+                aria-expanded={isOpen}
+              >
+                {/* Index */}
+                <span
+                  className="font-mono text-[9px] tracking-[0.2em] shrink-0"
+                  style={{ color: "rgba(168,85,247,0.45)" }}
                 >
-                  <div className="pb-5 pt-3 pl-10">
-                    <p
-                      className="text-xs leading-relaxed mb-4"
-                      style={{
-                        fontFamily: "var(--font-onest)",
-                        color: "rgba(255,255,255,0.5)",
-                      }}
-                    >
-                      {desc}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {card.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="text-[8px] px-2 py-1 rounded-full"
-                          style={{
-                            fontFamily: "var(--font-space-mono)",
-                            backgroundColor: "rgba(168,85,247,0.1)",
-                            color: "rgba(168,85,247,0.9)",
-                            border: "1px solid rgba(168,85,247,0.2)",
-                          }}
-                        >
-                          {skill}
-                        </span>
-                      ))}
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+
+                {/* Icon */}
+                <span
+                  className="text-lg shrink-0 transition-transform duration-200"
+                  style={{
+                    color: "#a855f7",
+                    transform: isOpen ? "scale(1.15)" : "scale(1)",
+                  }}
+                >
+                  {card.icon}
+                </span>
+
+                {/* Title */}
+                <span
+                  className="flex-1 font-display font-extrabold uppercase leading-none transition-colors duration-200"
+                  style={{
+                    fontSize: "clamp(1.1rem, 5vw, 1.4rem)",
+                    letterSpacing: "-0.02em",
+                    color: isOpen ? "#fff" : "rgba(255,255,255,0.65)",
+                  }}
+                >
+                  {title}
+                </span>
+
+                {/* Arrow */}
+                <span
+                  className="font-mono text-xs shrink-0 transition-transform duration-200"
+                  style={{
+                    color: "rgba(168,85,247,0.5)",
+                    transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                    display: "inline-block",
+                  }}
+                >
+                  →
+                </span>
+              </button>
+
+              {/* Line accent — CSS transition, not Framer */}
+              <div
+                className="h-px rounded-full"
+                style={{
+                  backgroundColor: "rgba(168,85,247,0.4)",
+                  transform: isOpen ? "scaleX(1)" : "scaleX(0)",
+                  transformOrigin: "left",
+                  transition: "transform 0.25s ease-out",
+                }}
+              />
+
+              {/* Accordion body — layout-driven, no height animation */}
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    key="body"
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                  >
+                    <div className="pb-5 pt-3 pl-10">
+                      <p
+                        className="text-xs leading-relaxed mb-4"
+                        style={{
+                          fontFamily: "var(--font-onest)",
+                          color: "rgba(255,255,255,0.5)",
+                        }}
+                      >
+                        {desc}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {card.skills.map((skill) => (
+                          <span
+                            key={skill}
+                            className="text-[8px] px-2 py-1 rounded-full"
+                            style={{
+                              fontFamily: "var(--font-space-mono)",
+                              backgroundColor: "rgba(168,85,247,0.1)",
+                              color: "rgba(168,85,247,0.9)",
+                              border: "1px solid rgba(168,85,247,0.2)",
+                            }}
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        );
-      })}
-    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
+    </LayoutGroup>
   );
 }
 

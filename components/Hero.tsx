@@ -15,7 +15,8 @@ import { E } from "@/lib/easing";
 const BG_VIDEO =
   "https://videos.pexels.com/video-files/29848606/12817773_2560_1440_30fps.mp4";
 
-const AMBER = "#c8956c";
+const AMBER = "var(--color-amber)";
+const AMBER_HEX = "#c8956c";
 const AMBER_DIM = "rgba(200,149,108,";
 
 function AnimatedCharName({ text, delay }: { text: string; delay: number }) {
@@ -47,6 +48,7 @@ function AnimatedCharName({ text, delay }: { text: string; delay: number }) {
 export default function Hero() {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -78,6 +80,22 @@ export default function Hero() {
     return () => window.removeEventListener("mousemove", move);
   }, [mouseX, mouseY]);
 
+  // Defer video load: skip on reduced-motion preference or slow connections
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    const slowNet = conn?.saveData || conn?.effectiveType === "slow-2g" || conn?.effectiveType === "2g";
+
+    if (prefersReduced || slowNet) return;
+
+    video.src = BG_VIDEO;
+    video.load();
+    video.play().catch(() => {});
+  }, []);
+
   return (
     <div ref={containerRef} style={{ height: "200vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden" style={{ background: "#030308" }}>
@@ -87,13 +105,18 @@ export default function Hero() {
           className="absolute inset-0"
           style={{ scale: videoScale, opacity: videoOpacity, willChange: "transform, opacity" }}
         >
+          {/* poster="/hero-poster.jpg" — create from a frame of BG_VIDEO and place in /public */}
           <video
+            ref={videoRef}
             autoPlay
             muted
             loop
             playsInline
+            aria-hidden="true"
+            poster="/hero-poster.jpg"
+            width={1280}
+            height={720}
             className="absolute inset-0 w-full h-full object-cover"
-            src={BG_VIDEO}
           />
         </motion.div>
 
@@ -138,10 +161,10 @@ export default function Hero() {
               width: 14, height: 14,
               top: c.top, left: (c as { left?: string }).left,
               right: (c as { right?: string }).right, bottom: c.bottom,
-              borderTop:    c.borderTop    ? `1px solid ${AMBER_DIM}0.25)` : undefined,
-              borderBottom: c.borderBottom ? `1px solid ${AMBER_DIM}0.25)` : undefined,
-              borderLeft:   c.borderLeft   ? `1px solid ${AMBER_DIM}0.25)` : undefined,
-              borderRight:  c.borderRight  ? `1px solid ${AMBER_DIM}0.25)` : undefined,
+              borderTop:    c.borderTop    ? "1px solid rgba(var(--color-amber-rgb),0.25)" : undefined,
+              borderBottom: c.borderBottom ? "1px solid rgba(var(--color-amber-rgb),0.25)" : undefined,
+              borderLeft:   c.borderLeft   ? "1px solid rgba(var(--color-amber-rgb),0.25)" : undefined,
+              borderRight:  c.borderRight  ? "1px solid rgba(var(--color-amber-rgb),0.25)" : undefined,
               pointerEvents: "none", zIndex: 3,
             }}
           />
@@ -155,7 +178,7 @@ export default function Hero() {
           className="absolute top-12 sm:top-14 md:top-8 left-4 sm:left-6 md:left-10 flex items-center gap-2.5"
           style={{ zIndex: 5 }}
         >
-          <span className="blink-dot" style={{ color: AMBER }} />
+          <span className="blink-dot" style={{ color: AMBER_HEX }} />
           <span className="font-mono text-[9px] text-white/70 tracking-[0.25em] uppercase">
             {t.hero.available}
           </span>
@@ -217,7 +240,7 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: E, delay: 3.5 }}
                   className="font-mono text-[10px] tracking-[0.2em] uppercase mb-2"
-                  style={{ color: AMBER }}
+                  style={{ color: AMBER_HEX }}
                 >
                   {t.hero.role}
                 </motion.p>
@@ -242,12 +265,12 @@ export default function Hero() {
                     className="group relative inline-flex items-center px-6 py-2.5 overflow-hidden rounded-full font-mono text-[10px] tracking-[0.15em] uppercase font-bold text-black active:scale-[0.97] transition-transform duration-100"
                   >
                     <div
-                      className="absolute inset-0 group-hover:scale-x-0 transition-transform duration-400 origin-right"
-                      style={{ background: AMBER }}
+                      className="absolute inset-0 rounded-[inherit] group-hover:scale-x-0 transition-transform duration-400 origin-right"
+                      style={{ background: AMBER_HEX }}
                     />
                     <div
-                      className="absolute inset-0 group-hover:scale-x-100 scale-x-0 transition-transform duration-400 origin-left"
-                      style={{ border: `1px solid ${AMBER}` }}
+                      className="absolute inset-0 rounded-[inherit] group-hover:scale-x-100 scale-x-0 transition-transform duration-400 origin-left"
+                      style={{ border: `1px solid ${AMBER_HEX}` }}
                     />
                     <span className="relative transition-colors duration-400 group-hover:text-[#c8956c]">
                       {t.hero.cta}

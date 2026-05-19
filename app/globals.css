@@ -7,8 +7,10 @@
   --color-text:     #ffffff;
   --color-muted:    rgba(255,255,255,0.35);
   --color-border:   rgba(255,255,255,0.07);
-  --color-violet:     #a855f7;          /* electric violet accent */
+  --color-violet:     #a855f7;
   --color-violet-dim: rgba(168,85,247,0.12);
+  --color-amber:      #c8956c;
+  --color-amber-dim:  rgba(200,149,108,0.12);
 
   /* ── Fonts ── */
   --font-display: var(--font-archivo-black);  /* solid, strong display */
@@ -25,6 +27,30 @@
   --ease-zentry:     cubic-bezier(0.65, 0.05, 0.36, 1);
   --ease-sine:       cubic-bezier(0.445, 0.05, 0.55, 0.95);
   --sidebar-w:       60px;
+
+  /* Motion duration tokens */
+  --motion-duration-fast:   150ms;
+  --motion-duration-base:   300ms;
+  --motion-duration-slow:   600ms;
+  --motion-duration-xslow:  900ms;
+
+  /* Spacing scale (base 4px) */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Brand amber tokens */
+  --color-amber:     #c8956c;
+  --color-amber-rgb: 200, 149, 108;
 }
 
 html {

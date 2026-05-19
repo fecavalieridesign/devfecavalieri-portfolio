@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo_Black, Onest, Space_Mono } from "next/font/google";
 import LenisProvider from "@/components/LenisProvider";
 import Loader from "@/components/Loader";
+import { CustomCursor } from "@/components/animations";
 import "./globals.css";
 
 const archivoBlack = Archivo_Black({
@@ -127,6 +128,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        {/* Preload hero poster as LCP candidate — create /public/hero-poster.jpg from a frame of the hero video */}
+        <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -1,15 +1,55 @@
 "use client";
 
-// Contact — terminal prompt style (KPRverse console UI)
-// "> CONNECT_WITH://" heading + three contact rows + CTA
-
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { E } from "@/lib/easing";
 import SectionLabel from "@/components/ui/SectionLabel";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
+
+interface FormData {
+  name: string;
+  email: string;
+  project: string;
+  message: string;
+}
 
 export default function Contact() {
   const { t } = useLanguage();
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    project: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Formspree endpoint — crie em formspree.io e substitua o ID abaixo
+      const res = await fetch("https://formspree.io/f/REPLACE_WITH_YOUR_ID", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setIsSubmitted(true);
+        setFormData({ name: "", email: "", project: "", message: "" });
+        setTimeout(() => setIsSubmitted(false), 5000);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const links = [
     {
@@ -60,15 +100,6 @@ export default function Contact() {
           filter: "blur(50px)",
         }}
       />
-      {/* Zentry diagonal shape */}
-      <div
-        aria-hidden
-        className="absolute right-0 bottom-1/4 w-72 h-72 pointer-events-none"
-        style={{
-          background: "rgba(168,85,247,0.015)",
-          clipPath: "polygon(16% 0, 89% 15%, 75% 100%, 0 97%)",
-        }}
-      />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
         <SectionLabel label="[006_CONTACT]" dividerColor="bg-black/[0.08]" />
@@ -95,7 +126,7 @@ export default function Contact() {
               className="font-display font-extrabold uppercase text-black leading-[0.88]"
               style={{ fontSize: "clamp(2.5rem, 7vw, 6.5rem)", letterSpacing: "-0.04em" }}
             >
-              {t.contact.heading1}
+              <AnimatedHeading text={t.contact.heading1} delay={700} />
             </h2>
           </motion.div>
           <motion.div
@@ -113,7 +144,7 @@ export default function Contact() {
                 color: "transparent",
               }}
             >
-              {t.contact.heading2}
+              <AnimatedHeading text={t.contact.heading2} delay={900} />
             </h2>
           </motion.div>
         </div>
@@ -130,8 +161,103 @@ export default function Contact() {
           <span className="font-mono text-[12px] text-violet/50 tracking-[0.22em] uppercase">{t.contact.available}</span>
         </motion.div>
 
-        {/* Contact rows — terminal output style */}
-        <div className="border-t border-black/[0.08] mb-14">
+        {/* Contact Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: E, delay: 0.3 }}
+          className="mb-14"
+        >
+          {isSubmitted ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-violet/10 border border-violet/30 rounded-xl p-8 text-center"
+            >
+              <div className="text-4xl mb-4">✓</div>
+              <h3 className="font-display text-xl text-black mb-2">Mensagem enviada!</h3>
+              <p className="font-mono text-sm text-black/60">Vou responder em breve.</p>
+            </motion.div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Nome</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-white/50 border border-black/10 rounded-lg px-4 py-3 font-body text-black/80 outline-none focus:border-violet/60 focus-visible:ring-2 focus-visible:ring-violet/30 transition-colors"
+                    placeholder="Seu nome"
+                  />
+                </div>
+                <div>
+                  <label className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-white/50 border border-black/10 rounded-lg px-4 py-3 font-body text-black/80 outline-none focus:border-violet/60 focus-visible:ring-2 focus-visible:ring-violet/30 transition-colors"
+                    placeholder="seu@email.com"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Tipo de projeto</label>
+                <select
+                  name="project"
+                  value={formData.project}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-white/50 border border-black/10 rounded-lg px-4 py-3 font-body text-black/80 outline-none focus:border-violet/60 focus-visible:ring-2 focus-visible:ring-violet/30 transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="">Selecione uma opção</option>
+                  <option value="site">Site / Landing Page</option>
+                  <option value="linkbio">LinkBio Personalizado</option>
+                  <option value="ia">Automação com IA</option>
+                  <option value="other">Outro</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Mensagem</label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows={4}
+                  className="w-full bg-white/50 border border-black/10 rounded-lg px-4 py-3 font-body text-black/80 focus:outline-none focus:border-violet/50 transition-colors resize-none"
+                  placeholder="Conte-me sobre seu projeto..."
+                />
+              </div>
+              
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="group relative inline-flex items-center gap-3 px-8 py-4 overflow-hidden cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <div className="absolute inset-0 bg-violet group-hover:scale-x-0 transition-transform duration-400 origin-right" />
+                <div className="absolute inset-0 border border-violet group-hover:scale-x-100 scale-x-0 transition-transform duration-400 origin-left" />
+                <span className="relative font-mono text-[10px] font-bold text-black group-hover:text-violet transition-colors duration-400 tracking-[0.15em] uppercase">
+                  {isSubmitting ? "Enviando..." : "Enviar mensagem"}
+                </span>
+                <span className="relative font-mono text-black/70 group-hover:text-violet transition-colors duration-400 text-sm">
+                  →
+                </span>
+              </button>
+            </form>
+          )}
+        </motion.div>
+
+        {/* Contact links */}
+        <div className="border-t border-black/[0.08]">
           {links.map((link, i) => (
             <motion.a
               key={link.id}
@@ -161,35 +287,6 @@ export default function Contact() {
             </motion.a>
           ))}
         </div>
-
-        {/* CTA button — lime fill that wipes on hover */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: E, delay: 0.35 }}
-        >
-          <a
-            href={t.contact.linkedinHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${t.contact.cta} — LinkedIn de Felipe Cavalieri, abre em nova aba`}
-            className="group relative inline-flex items-center gap-3 px-8 py-3.5 overflow-hidden cursor-pointer"
-          >
-            <div className="absolute inset-0 bg-violet group-hover:scale-x-0 transition-transform duration-400 origin-right" />
-            <div className="absolute inset-0 border border-violet group-hover:scale-x-100 scale-x-0 transition-transform duration-400 origin-left" />
-            <span className="relative font-mono text-[10px] font-bold text-black group-hover:text-violet transition-colors duration-400 tracking-[0.15em] uppercase">
-              {t.contact.cta}
-            </span>
-            <motion.span
-              className="relative font-mono text-black/70 group-hover:text-violet transition-colors duration-400 text-sm"
-              animate={{ x: [0, 3, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              ↗
-            </motion.span>
-          </a>
-        </motion.div>
       </div>
     </section>
   );

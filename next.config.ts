@@ -83,17 +83,10 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Redirects — force apex (fecavalieri.dev) as canonical host
-  // Kills the multi-hop www → apex chain that adds ~800ms TTFB on mobile
+  // Redirects — Vercel edge already handles apex → www (project canonical).
+  // Do NOT add a www → apex rule here; it loops against the Vercel edge.
   async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.fecavalieri.dev" }],
-        destination: "https://fecavalieri.dev/:path*",
-        permanent: true,
-      },
-    ];
+    return [];
   },
 
   // Rewrites (if needed)

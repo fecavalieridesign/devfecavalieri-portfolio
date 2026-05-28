@@ -15,12 +15,12 @@ export default function Footer() {
 
         <div className="flex items-center gap-3">
           <span className="blink-dot text-violet" />
-          <span className="font-mono text-[8px] text-white/20 tracking-[0.25em] uppercase">
+          <span className="font-mono text-[8px] text-white/65 tracking-[0.25em] uppercase">
             {lang === "pt" ? "DISPONÍVEL" : "AVAILABLE"}
           </span>
         </div>
 
-        <p className="font-mono text-[8px] text-white/10 tracking-[0.2em] uppercase">
+        <p className="font-mono text-[8px] text-white/55 tracking-[0.2em] uppercase">
           © {year} FELIPE_CAVALIERI
         </p>
 
@@ -36,7 +36,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label={ariaLabel}
               whileHover={{ color: "#a855f7" }}
-              className="font-mono text-[8px] text-white/20 tracking-[0.2em] uppercase transition-colors duration-300 cursor-pointer"
+              className="font-mono text-[8px] text-white/65 tracking-[0.2em] uppercase transition-colors duration-300 cursor-pointer"
             >
               {label} ↗
             </motion.a>

@@ -7,10 +7,8 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Stack from "@/components/Stack";
-import { FeaturesGrid } from "@/components/ui/features-grid";
 import About from "@/components/About";
 import Expertise from "@/components/Expertise";
-import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollBg from "@/components/ScrollBg";
@@ -29,6 +27,13 @@ const WorkHorizontal = dynamic(() => import("@/components/WorkHorizontal"), {
 
 const InteractiveParticles = dynamic(
   () => import("@/components/effects/Particles").then(mod => ({ default: mod.InteractiveParticles })),
+  { ssr: false }
+);
+
+// Below-the-fold sections — defer until needed (kills upfront bundle weight)
+const Testimonials = dynamic(() => import("@/components/Testimonials"), { ssr: false });
+const FeaturesGrid = dynamic(
+  () => import("@/components/ui/features-grid").then(mod => ({ default: mod.FeaturesGrid })),
   { ssr: false }
 );
 

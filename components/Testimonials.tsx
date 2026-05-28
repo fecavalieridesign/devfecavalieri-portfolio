@@ -4,84 +4,88 @@ import { motion } from "framer-motion";
 import { E } from "@/lib/easing";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { Marquee } from "@/components/ui/marquee";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
+
+// Simple deterministic initials-avatar in a violet circle.
+// Replaces the previous pravatar.cc fake AI faces (ethically dishonest +
+// 9 external preloads tanking LCP).
+function InitialAvatar({ name }: { name: string }) {
+  const parts = name.replace(/^(Dra?|Sr|Sra)\.\s+/i, "").split(" ");
+  const initials = (parts[0]?.[0] ?? "") + (parts[parts.length - 1]?.[0] ?? "");
+  return (
+    <div
+      aria-hidden
+      className="size-8 rounded-full flex items-center justify-center font-mono text-[10px] font-semibold text-violet shrink-0"
+      style={{ background: "rgba(168,85,247,0.18)", border: "1px solid rgba(168,85,247,0.35)" }}
+    >
+      {initials.toUpperCase()}
+    </div>
+  );
+}
 
 const testimonials = [
   {
     name: "Dra. Yasmin Almeida",
     username: "@yasmin.derm",
     body: "Felipe entregou o site da clínica em tempo recorde. A identidade visual ficou perfeita e os pacientes adoraram o resultado.",
-    img: "https://i.pravatar.cc/40?img=1",
     role: "Médica · Dermatologista",
   },
   {
     name: "Victoria Belli",
     username: "@victoriabelli",
     body: "Trabalhar com o Felipe foi muito tranquilo. Ele entendeu o que eu queria logo de cara e o resultado superou minhas expectativas.",
-    img: "https://i.pravatar.cc/40?img=5",
     role: "Fundadora · Victoria Belli",
   },
   {
     name: "Ana Luíza",
     username: "@analuiza",
     body: "O e-commerce ficou incrível. Minhas vendas aumentaram bastante depois do lançamento. Super recomendo!",
-    img: "https://i.pravatar.cc/40?img=9",
     role: "Empreendedora",
   },
   {
     name: "Rafael Mendes",
     username: "@rafaelmendes",
     body: "Profissional muito competente, cumpriu todos os prazos e ainda sugeriu melhorias que nem tinham passado pela minha cabeça.",
-    img: "https://i.pravatar.cc/40?img=12",
     role: "CEO · AgênciaRM",
   },
   {
     name: "Camila Torres",
     username: "@camilatorres",
     body: "O linkbio que ele criou pra mim é simplesmente lindo. Meus seguidores sempre perguntam onde fiz.",
-    img: "https://i.pravatar.cc/40?img=20",
     role: "Criadora de Conteúdo",
   },
   {
     name: "Bruno Carvalho",
     username: "@brunocarvalho",
     body: "Comunicação excelente do início ao fim. Felipe explica tudo de forma clara e entrega com qualidade.",
-    img: "https://i.pravatar.cc/40?img=32",
     role: "Diretor · StartupBC",
   },
   {
     name: "Júlia Fonseca",
     username: "@juliafoto",
     body: "Nunca tinha visto um site tão rápido e bonito ao mesmo tempo. Felipe sabe exatamente o que está fazendo.",
-    img: "https://i.pravatar.cc/40?img=47",
     role: "Fotógrafa",
   },
   {
     name: "Dr. Pedro Saraiva",
     username: "@pedropsi",
     body: "Contratei para refazer o portfólio e ficou além do que eu esperava. Agendamentos aumentaram em 40%.",
-    img: "https://i.pravatar.cc/40?img=56",
     role: "Psicólogo Clínico",
   },
   {
     name: "Mariana Costa",
     username: "@maricosta",
     body: "Atendimento rápido, preço justo e trabalho impecável. É o tipo de profissional que você quer no seu time.",
-    img: "https://i.pravatar.cc/40?img=62",
     role: "Gerente de Marketing",
   },
 ];
 
-function TestimonialCard({ img, name, username, body, role }: (typeof testimonials)[number]) {
+function TestimonialCard({ name, username, body, role }: (typeof testimonials)[number]) {
   return (
     <Card className="w-64">
       <CardContent className="p-4">
         <div className="flex items-center gap-2.5">
-          <Avatar className="size-8">
-            <AvatarImage src={img} alt={name} />
-            <AvatarFallback>{name[0]}</AvatarFallback>
-          </Avatar>
+          <InitialAvatar name={name} />
           <div className="flex flex-col">
             <figcaption className="text-xs font-medium text-white leading-tight">{name}</figcaption>
             <p className="text-[10px] font-mono text-white/40">{username}</p>

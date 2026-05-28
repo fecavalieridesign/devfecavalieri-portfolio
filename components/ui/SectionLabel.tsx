@@ -18,7 +18,7 @@ export default function SectionLabel({ label, dividerColor = "bg-white/[0.04]", 
           whileInView={{ y: "0%" }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: E }}
-          className="block font-mono text-[8px] text-violet/40 tracking-[0.25em] uppercase"
+          className="block font-mono text-[8px] text-violet/90 tracking-[0.25em] uppercase"
         >
           {label}
         </motion.span>

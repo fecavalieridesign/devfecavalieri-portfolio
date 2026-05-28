@@ -166,17 +166,17 @@ function StackCard({
           >
             {/* Index + year */}
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "1rem" }}>
-              <span className="font-mono" style={{ fontSize: "9px", color: "rgba(168,85,247,0.7)", letterSpacing: "0.22em" }}>
+              <span className="font-mono" style={{ fontSize: "9px", color: "rgba(124,58,237,1)", letterSpacing: "0.22em" }}>
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span style={{ width: "18px", height: "1px", background: "rgba(168,85,247,0.25)", flexShrink: 0 }} />
-              <span className="font-mono" style={{ fontSize: "9px", color: "rgba(0,0,0,0.3)", letterSpacing: "0.18em" }}>
+              <span style={{ width: "18px", height: "1px", background: "rgba(124,58,237,0.4)", flexShrink: 0 }} />
+              <span className="font-mono" style={{ fontSize: "9px", color: "rgba(0,0,0,0.6)", letterSpacing: "0.18em" }}>
                 {project.year}
               </span>
             </div>
 
             {/* Label */}
-            <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.18em", color: "rgba(0,0,0,0.35)", textTransform: "uppercase", marginBottom: "0.6rem" }}>
+            <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.18em", color: "rgba(0,0,0,0.6)", textTransform: "uppercase", marginBottom: "0.6rem" }}>
               {project.label}
             </p>
 
@@ -200,7 +200,7 @@ function StackCard({
               className="font-mono"
               style={{
                 fontSize: "0.7rem",
-                color: "rgba(0,0,0,0.45)",
+                color: "rgba(0,0,0,0.65)",
                 lineHeight: 1.65,
                 flex: 1,
                 overflow: "hidden",
@@ -220,7 +220,7 @@ function StackCard({
                   className="font-mono"
                   style={{
                     fontSize: "8px",
-                    color: "rgba(0,0,0,0.38)",
+                    color: "rgba(0,0,0,0.62)",
                     border: "1px solid rgba(0,0,0,0.10)",
                     padding: "3px 8px",
                     borderRadius: "3px",
@@ -238,8 +238,8 @@ function StackCard({
                   className="font-mono"
                   style={{
                     fontSize: "9px",
-                    color: "rgba(168,85,247,0.8)",
-                    border: "1px solid rgba(168,85,247,0.2)",
+                    color: "rgba(124,58,237,1)",
+                    border: "1px solid rgba(124,58,237,0.3)",
                     background: "rgba(168,85,247,0.06)",
                     padding: "3px 10px",
                     borderRadius: "999px",
@@ -265,7 +265,7 @@ function StackCard({
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
                 textDecoration: "none",
-                color: "rgba(168,85,247,0.75)",
+                color: "rgba(124,58,237,1)",
                 transition: "color 0.2s",
               }}
             >
@@ -358,7 +358,7 @@ export default function WorkHorizontal() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: E }}
-          className="font-mono inline-flex items-center gap-3 text-black/30 hover:text-black/60 transition-colors duration-300"
+          className="font-mono inline-flex items-center gap-3 text-black/60 hover:text-black/80 transition-colors duration-300"
           style={{ fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none" }}
         >
           <span className="w-8 h-px bg-current" />

@@ -83,9 +83,17 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Redirects (if needed)
+  // Redirects — force apex (fecavalieri.dev) as canonical host
+  // Kills the multi-hop www → apex chain that adds ~800ms TTFB on mobile
   async redirects() {
-    return [];
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.fecavalieri.dev" }],
+        destination: "https://fecavalieri.dev/:path*",
+        permanent: true,
+      },
+    ];
   },
 
   // Rewrites (if needed)

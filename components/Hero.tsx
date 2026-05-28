@@ -12,8 +12,7 @@ import {
 import { useLanguage } from "@/context/LanguageContext";
 import { E } from "@/lib/easing";
 
-const BG_VIDEO =
-  "https://videos.pexels.com/video-files/29848606/12817773_2560_1440_30fps.mp4";
+const BG_VIDEO = "/hero-bg.mp4";
 
 const AMBER = "var(--color-amber)";
 const AMBER_HEX = "#c8956c";

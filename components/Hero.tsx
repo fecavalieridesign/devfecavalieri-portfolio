@@ -87,8 +87,11 @@ export default function Hero() {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     const slowNet = conn?.saveData || conn?.effectiveType === "slow-2g" || conn?.effectiveType === "2g";
+    // Skip the 8.6MB video on mobile viewports — poster handles the background.
+    // Saves ~40s of download on simulated Slow 4G, kills LCP penalty on mobile.
+    const isMobile = window.innerWidth < 768;
 
-    if (prefersReduced || slowNet) return;
+    if (prefersReduced || slowNet || isMobile) return;
 
     video.src = BG_VIDEO;
     video.load();

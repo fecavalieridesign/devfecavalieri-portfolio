@@ -52,7 +52,7 @@ export function FeaturesGrid() {
               <CardContent className="pt-6">
                 <div className="pt-6 lg:px-6">
                   <div className="h-20 w-full rounded-lg bg-gradient-to-br from-violet/20 to-transparent border border-violet/20 flex items-center justify-center gap-3">
-                    <Smartphone className="size-5 text-violet/70" strokeWidth={1.5} />
+                    <Smartphone className="size-5 text-violet/90" strokeWidth={1.5} />
                     <span className="font-mono text-violet text-xs tracking-widest">
                       MOBILE FIRST
                     </span>
@@ -72,7 +72,7 @@ export function FeaturesGrid() {
               <CardContent className="grid h-full pt-6 sm:grid-cols-2">
                 <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-6">
                   <div className="relative flex aspect-square size-12 rounded-full border border-white/10 before:absolute before:-inset-2 before:rounded-full before:border before:border-white/5 items-center justify-center">
-                    <span className="font-mono text-[10px] text-violet/70">FC</span>
+                    <span className="font-mono text-[10px] text-violet/90">FC</span>
                   </div>
                   <div className="space-y-2">
                     <h2 className="text-lg font-medium text-white">

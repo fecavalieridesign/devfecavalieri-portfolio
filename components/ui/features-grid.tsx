@@ -72,7 +72,7 @@ export function FeaturesGrid() {
               <CardContent className="grid h-full pt-6 sm:grid-cols-2">
                 <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-6">
                   <div className="relative flex aspect-square size-12 rounded-full border border-white/10 before:absolute before:-inset-2 before:rounded-full before:border before:border-white/5 items-center justify-center">
-                    <span className="font-mono text-[10px] text-violet/90">FC</span>
+                    <span className="font-mono text-[10px] text-violet font-semibold">FC</span>
                   </div>
                   <div className="space-y-2">
                     <h2 className="text-lg font-medium text-white">

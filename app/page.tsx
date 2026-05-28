@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Nav from "@/components/Nav";
@@ -39,15 +39,16 @@ const FeaturesGrid = dynamic(
 
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
+  // Skip the boot-up LoadingScreen on mobile and e2e/lighthouse profiles —
+  // the splash adds ~3-4s of mandatory dead time that demolishes LCP/FCP
+  // on throttled mobile networks. Desktop keeps the cinematic intro.
+  const [isLoading, setIsLoading] = useState(() => {
+    if (typeof window === "undefined") return true;
+    if (window.innerWidth < 768) return false;
+    if (new URLSearchParams(window.location.search).has("e2e")) return false;
+    return true;
+  });
   const isMobile = useIsMobile();
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.has("e2e")) {
-      setIsLoading(false);
-    }
-  }, []);
 
   return (
     <LanguageProvider>

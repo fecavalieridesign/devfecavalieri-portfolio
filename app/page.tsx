@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Nav from "@/components/Nav";
@@ -39,16 +39,17 @@ const FeaturesGrid = dynamic(
 
 
 export default function Home() {
-  // Skip the boot-up LoadingScreen on mobile and e2e/lighthouse profiles —
-  // the splash adds ~3-4s of mandatory dead time that demolishes LCP/FCP
-  // on throttled mobile networks. Desktop keeps the cinematic intro.
-  const [isLoading, setIsLoading] = useState(() => {
-    if (typeof window === "undefined") return true;
-    if (window.innerWidth < 768) return false;
-    if (new URLSearchParams(window.location.search).has("e2e")) return false;
-    return true;
-  });
+  // SSR-safe: always start as loading. Effect below disables splash on
+  // mobile / e2e probes to avoid LCP penalty without creating a hydration
+  // mismatch (React error #418).
+  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const onMobile = window.innerWidth < 768;
+    const isE2E = new URLSearchParams(window.location.search).has("e2e");
+    if (onMobile || isE2E) setIsLoading(false);
+  }, []);
 
   return (
     <LanguageProvider>

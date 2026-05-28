@@ -183,8 +183,9 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Nome</label>
+                  <label htmlFor="contact-name" className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Nome</label>
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
                     value={formData.name}
@@ -195,8 +196,9 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Email</label>
+                  <label htmlFor="contact-email" className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Email</label>
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     value={formData.email}
@@ -209,8 +211,9 @@ export default function Contact() {
               </div>
               
               <div>
-                <label className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Tipo de projeto</label>
+                <label htmlFor="contact-project" className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Tipo de projeto</label>
                 <select
+                  id="contact-project"
                   name="project"
                   value={formData.project}
                   onChange={handleChange}
@@ -226,8 +229,9 @@ export default function Contact() {
               </div>
               
               <div>
-                <label className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Mensagem</label>
+                <label htmlFor="contact-message" className="block font-mono text-[10px] text-black/40 tracking-wider uppercase mb-2">Mensagem</label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}

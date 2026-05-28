@@ -41,7 +41,7 @@ export function FeaturesGrid() {
                 <div className="relative z-10 mt-6 space-y-2 text-center">
                   <h2 className="text-lg font-medium text-white">SEO & Performance</h2>
                   <p className="text-white/50 text-sm">
-                    Sites com 100 no Lighthouse. Rápidos, leves e preparados para aparecer no Google.
+                    SEO, Acessibilidade e Best Practices em 100 no Lighthouse. Rápidos, leves e preparados para aparecer no Google.
                   </p>
                 </div>
               </CardContent>

@@ -31,7 +31,7 @@ const PROJECTS = [
     label: "Saúde · Landing Page",
     description:
       "Site institucional para biomédica esteta com agenda online, depoimentos e identidade visual de saúde premium — do design ao deploy.",
-    outcome: "100 Lighthouse",
+    outcome: "100 SEO",
     url: "https://dra-yasmin.vercel.app/",
     image: "/cases/dra-yasmin.png",
     tags: ["Next.js", "Framer Motion"],

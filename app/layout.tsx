@@ -26,25 +26,28 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
-const BASE_URL = "https://devfecavalieri.com";
+const BASE_URL = "https://fecavalieri.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Felipe Cavalieri — Web Developer & Technical Support",
+    default: "Felipe Cavalieri — Web Developer & IA",
     template: "%s | Felipe Cavalieri",
   },
   description:
-    "Portfolio of Felipe Cavalieri Silveira — Web Developer, Technical Support Analyst and Customer Success with 4+ years of experience building web products with React and Next.js.",
+    "Felipe Cavalieri — desenvolvedor web especializado em React e Next.js. Crio sites, landing pages e soluções com Inteligência Artificial que convertem. 4+ anos de experiência.",
   keywords: [
     "Felipe Cavalieri",
     "Web Developer",
+    "Desenvolvedor Web",
     "Frontend Developer",
     "Next.js",
     "React",
     "TypeScript",
-    "Technical Support",
-    "Customer Success",
+    "Inteligência Artificial",
+    "Automação",
+    "Landing Pages",
+    "Chatbots",
   ],
   authors: [{ name: "Felipe Cavalieri Silveira", url: BASE_URL }],
   creator: "Felipe Cavalieri Silveira",
@@ -54,23 +57,23 @@ export const metadata: Metadata = {
     alternateLocale: "en_US",
     url: BASE_URL,
     siteName: "Felipe Cavalieri",
-    title: "Felipe Cavalieri — Web Developer & Technical Support",
+    title: "Felipe Cavalieri — Web Developer & IA",
     description:
-      "Portfolio of Felipe Cavalieri Silveira — Web Developer, Technical Support and Customer Success with 4+ years of experience.",
+      "Desenvolvedor web especializado em React e Next.js. Sites, landing pages e soluções com IA que convertem. 4+ anos de experiência.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Felipe Cavalieri — Web Developer & Technical Support",
+        alt: "Felipe Cavalieri — Web Developer & IA",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Felipe Cavalieri — Web Developer & Technical Support",
+    title: "Felipe Cavalieri — Web Developer & IA",
     description:
-      "Portfolio of Felipe Cavalieri Silveira — Web Developer, Technical Support and Customer Success.",
+      "Desenvolvedor web especializado em React e Next.js. Sites, landing pages e soluções com IA que convertem.",
     images: ["/og-image.png"],
     creator: "@fecavalieri",
   },
@@ -105,9 +108,9 @@ const jsonLd = {
   "@type": "Person",
   name: "Felipe Cavalieri Silveira",
   url: BASE_URL,
-  jobTitle: "Web Developer & Technical Support Analyst",
+  jobTitle: "Web Developer & AI Specialist",
   description:
-    "Web Developer specializing in React and Next.js, with expertise in Technical Support and Customer Success.",
+    "Web Developer specializing in React and Next.js, building websites, landing pages and AI-powered solutions.",
   email: "devfecavalieri@gmail.com",
   sameAs: [
     "https://github.com/fecavalieridesign",
@@ -119,8 +122,9 @@ const jsonLd = {
     "TypeScript",
     "Tailwind CSS",
     "Framer Motion",
-    "Technical Support",
-    "Customer Success",
+    "Artificial Intelligence",
+    "Automation",
+    "OpenAI",
   ],
 };
 

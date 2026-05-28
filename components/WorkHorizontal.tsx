@@ -49,30 +49,6 @@ const PROJECTS = [
     tags: ["React", "CSS"],
     year: "2023",
   },
-  {
-    id: "linkbio-1",
-    name: "LINKBIO PRO",
-    label: "Link na Bio · Personalizado",
-    description:
-      "LinkBio premium para criadores de conteúdo com animações suaves, analytics integrado e design exclusivo para aumentar engajamento.",
-    outcome: "↑ 55% cliques",
-    url: "#",
-    image: "/cases/linkbio-pro.png",
-    tags: ["Next.js", "Framer Motion", "Analytics"],
-    year: "2024",
-  },
-  {
-    id: "linkbio-2",
-    name: "LINKBIO MINIMAL",
-    label: "Link na Bio · Minimalista",
-    description:
-      "Design clean e minimalista focado em alta conversão. Performance otimizada com carregamento instantâneo e SEO configurado.",
-    outcome: "< 1s load time",
-    url: "#",
-    image: "/cases/linkbio-minimal.png",
-    tags: ["React", "Tailwind", "SEO"],
-    year: "2024",
-  },
 ];
 
 // ── Stack Card ─────────────────────────────────────────────────────────────────

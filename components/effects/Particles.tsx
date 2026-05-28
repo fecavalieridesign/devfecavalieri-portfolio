@@ -16,9 +16,13 @@ export function InteractiveParticles() {
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const rafRef = useRef<number | undefined>(undefined);
+  const isVisibleRef = useRef(true);
+  const isTouchRef = useRef(false);
 
   const initParticles = useCallback((width: number, height: number) => {
-    const particleCount = Math.min(30, Math.floor((width * height) / 50000));
+    // Reduced particle count for mobile
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 15 : Math.min(30, Math.floor((width * height) / 50000));
     particlesRef.current = [];
     
     for (let i = 0; i < particleCount; i++) {
@@ -34,6 +38,10 @@ export function InteractiveParticles() {
   }, []);
 
   useEffect(() => {
+    // Don't render on touch devices
+    isTouchRef.current = window.matchMedia("(pointer: coarse)").matches;
+    if (isTouchRef.current) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -58,89 +66,112 @@ export function InteractiveParticles() {
       mouseRef.current = { x: -1000, y: -1000 };
     };
 
+    const handleVisibilityChange = () => {
+      isVisibleRef.current = !document.hidden;
+    };
+
     handleResize();
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     let frameCount = 0;
-    const animate = () => {
+    let lastTime = 0;
+    
+    const animate = (time: number) => {
+      // Throttle to 30fps (33ms)
+      if (time - lastTime < 33) {
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastTime = time;
       frameCount++;
-      // Render a cada 2 frames para performance (30fps)
-      if (frameCount % 2 === 0) {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+      
+      // Skip rendering if not visible
+      if (!isVisibleRef.current) {
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      
+      ctx.clearRect(0, 0, width, height);
+      
+      const particles = particlesRef.current;
+      const mouse = mouseRef.current;
+
+      // Update and draw particles
+      particles.forEach((p, i) => {
+        // Base movement
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Mouse interaction (soft repulsion)
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
         
-        ctx.clearRect(0, 0, width, height);
-        
-        const particles = particlesRef.current;
-        const mouse = mouseRef.current;
+        if (dist < 150 && dist > 0) {
+          const force = (150 - dist) / 150 * 0.02;
+          p.vx += (dx / dist) * force;
+          p.vy += (dy / dist) * force;
+        }
 
-        // Atualizar e desenhar partículas
-        particles.forEach((p, i) => {
-          // Movimento base
-          p.x += p.vx;
-          p.y += p.vy;
+        // Limit velocity
+        p.vx = Math.max(-1, Math.min(1, p.vx * 0.99));
+        p.vy = Math.max(-1, Math.min(1, p.vy * 0.99));
 
-          // Interação com mouse (repulsão suave)
-          const dx = p.x - mouse.x;
-          const dy = p.y - mouse.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < 150 && dist > 0) {
-            const force = (150 - dist) / 150 * 0.02;
-            p.vx += (dx / dist) * force;
-            p.vy += (dy / dist) * force;
-          }
+        // Wrap around
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
 
-          // Limitar velocidade
-          p.vx = Math.max(-1, Math.min(1, p.vx * 0.99));
-          p.vy = Math.max(-1, Math.min(1, p.vy * 0.99));
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
+        ctx.fill();
 
-          // Wrap around
-          if (p.x < 0) p.x = width;
-          if (p.x > width) p.x = 0;
-          if (p.y < 0) p.y = height;
-          if (p.y > height) p.y = 0;
+        // Connections (only for nearby particles, limited)
+        if (i % 3 === 0) {
+          for (let j = i + 1; j < Math.min(i + 5, particles.length); j++) {
+            const p2 = particles[j];
+            const dx2 = p.x - p2.x;
+            const dy2 = p.y - p2.y;
+            const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
 
-          // Desenhar partícula
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
-          ctx.fill();
-
-          // Conexões (apenas para partículas próximas, limitado)
-          if (i % 3 === 0) { // Só verificar conexões para 1/3 das partículas
-            for (let j = i + 1; j < Math.min(i + 5, particles.length); j++) {
-              const p2 = particles[j];
-              const dx2 = p.x - p2.x;
-              const dy2 = p.y - p2.y;
-              const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-
-              if (dist2 < 100) {
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.strokeStyle = `rgba(168, 85, 247, ${0.1 * (1 - dist2 / 100)})`;
-                ctx.stroke();
-              }
+            if (dist2 < 100) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(168, 85, 247, ${0.1 * (1 - dist2 / 100)})`;
+              ctx.stroke();
             }
           }
-        });
-      }
+        }
+      });
 
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    rafRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [initParticles]);
+
+  // Don't render on touch devices
+  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+    return null;
+  }
 
   return (
     <canvas

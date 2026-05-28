@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { E } from "@/lib/easing";
+import { CurvedNavbar } from "@/components/ui/curved-menu";
 
 const SECTIONS = [
   { id: "work",      label: "WORK" },
@@ -15,6 +16,14 @@ const SECTIONS = [
   { id: "about",     label: "ABOUT" },
   { id: "expertise", label: "SKILLS" },
   { id: "contact",   label: "CONTACT" },
+];
+
+const CURVED_NAV_ITEMS = [
+  { heading: "Work",    href: "#work" },
+  { heading: "Stack",   href: "#stack" },
+  { heading: "About",   href: "#about" },
+  { heading: "Skills",  href: "#expertise" },
+  { heading: "Contact", href: "#contact" },
 ];
 
 export default function Nav() {
@@ -116,96 +125,13 @@ export default function Nav() {
         <span className="block h-[1.5px] w-5 bg-white" />
       </button>
 
-      {/* ══ MOBILE OVERLAY ═══════════════════════════════════════ */}
-      <AnimatePresence>
+      {/* ══ MOBILE OVERLAY — CurvedNavbar ═══════════════════════ */}
+      <AnimatePresence mode="wait">
         {mobileOpen && (
-          <motion.div
-            data-testid="mobile-nav-overlay"
-            initial={{ clipPath: "inset(0 0 100% 0)" }}
-            animate={{ clipPath: "inset(0 0 0% 0)" }}
-            exit={{ clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.5, ease: E }}
-            className="fixed inset-0 bg-[#030303] z-[60] flex flex-col overflow-hidden"
-          >
-            {/* Subtle violet orb background */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[120vw] h-[50vh] rounded-full bg-violet/[0.04] blur-[80px]" />
-            </div>
-
-            {/* Header row */}
-            <div className="relative flex items-center justify-between px-6 h-14 border-b border-white/[0.05]">
-              <span className="font-mono text-[10px] text-white/30 tracking-widest">FC / MENU</span>
-              <button
-                onClick={() => setMobileOpen(false)}
-                aria-label="Fechar menu"
-                data-testid="mobile-menu-close"
-                className="flex flex-col justify-center items-center gap-[5px] min-h-[44px] min-w-[44px] px-2 group"
-              >
-                {/* X icon from crossed bars */}
-                <motion.span
-                  initial={{ rotate: 0, y: 0 }}
-                  animate={{ rotate: 45, y: 6.5 }}
-                  className="block w-5 h-[1.5px] bg-white/40 group-hover:bg-violet transition-colors origin-center"
-                />
-                <motion.span
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 0 }}
-                  className="block w-5 h-[1.5px] bg-white/40"
-                />
-                <motion.span
-                  initial={{ rotate: 0, y: 0 }}
-                  animate={{ rotate: -45, y: -6.5 }}
-                  className="block w-5 h-[1.5px] bg-white/40 group-hover:bg-violet transition-colors origin-center"
-                />
-              </button>
-            </div>
-
-            {/* Nav links */}
-            <nav className="relative flex-1 flex flex-col justify-center px-7 gap-0">
-              {SECTIONS.map(({ id, label }, i) => (
-                <motion.a
-                  key={id}
-                  href={`#${id}`}
-                  onClick={() => setMobileOpen(false)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, ease: E, delay: 0.1 + i * 0.07 }}
-                  className="group flex items-center gap-4 border-b border-white/[0.05] py-5 hover:border-violet/20 transition-colors"
-                >
-                  <span className="font-mono text-[9px] text-white/15 group-hover:text-violet/60 transition-colors w-5 shrink-0">0{i + 1}</span>
-                  <span
-                    className="font-display font-extrabold text-white/70 group-hover:text-white transition-colors uppercase tracking-tight leading-none"
-                    style={{ fontSize: "clamp(2rem, 8vw, 3rem)" }}
-                  >
-                    {label}
-                  </span>
-                  <span className="ml-auto font-mono text-[9px] text-white/0 group-hover:text-violet/60 transition-colors">↗</span>
-                </motion.a>
-              ))}
-            </nav>
-
-            {/* Footer row */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.4 }}
-              className="relative flex items-center justify-between px-7 py-5 border-t border-white/[0.05]"
-            >
-              <div className="flex gap-5">
-                <a href="https://github.com/fecavalieridesign" target="_blank" rel="noopener noreferrer"
-                  aria-label="GitHub de Felipe Cavalieri — abre em nova aba"
-                  className="font-mono text-[9px] text-white/25 hover:text-violet transition-colors tracking-widest">
-                  GITHUB
-                </a>
-                <a href="https://www.linkedin.com/in/felipe-cavalieri-241092251" target="_blank" rel="noopener noreferrer"
-                  aria-label="LinkedIn de Felipe Cavalieri — abre em nova aba"
-                  className="font-mono text-[9px] text-white/25 hover:text-violet transition-colors tracking-widest">
-                  LINKEDIN
-                </a>
-              </div>
-              <span className="font-mono text-[9px] text-white/[0.12] tracking-widest">© 2026</span>
-            </motion.div>
-          </motion.div>
+          <CurvedNavbar
+            setIsActive={setMobileOpen}
+            navItems={CURVED_NAV_ITEMS}
+          />
         )}
       </AnimatePresence>
     </>

@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://devfecavalieri.com/sitemap.xml",
+    sitemap: "https://fecavalieri.dev/sitemap.xml",
   };
 }

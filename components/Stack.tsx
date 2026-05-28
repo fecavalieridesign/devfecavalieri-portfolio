@@ -5,8 +5,10 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import SectionLabel from "@/components/ui/SectionLabel";
 
-const easeOutExpo: [number, number, number, number] = [0.19, 1, 0.22, 1];
+// Easing mais rápido e responsivo para o stack
+const easeOutExpo: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const easeZentry: [number, number, number, number] = [0.65, 0.05, 0.36, 1];
+const easeSnapFast: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
 interface StackCard {
   title: string;
@@ -214,9 +216,9 @@ export default function Stack() {
   const stackVariants = {
     stacked: (i: number) => ({
       x: 0,
-      y: i * -6,
-      rotate: (i - 2) * 2.5,
-      scale: 1 - i * 0.015,
+      y: i * -4,
+      rotate: (i - 2) * 1.5,
+      scale: 1 - i * 0.01,
       zIndex: cards.length - i,
     }),
     spread: (i: number) => ({
@@ -287,8 +289,8 @@ export default function Stack() {
 
         {/* Desktop: card stack deck */}
         <motion.div
-          className="hidden md:flex relative items-center justify-center py-16 cursor-default overflow-hidden"
-          style={{ width: "100%", maxWidth: "700px", margin: "0 auto", minHeight: "360px", maxHeight: "80vh" }}
+          className="hidden md:flex relative items-center justify-center py-20 cursor-default"
+          style={{ width: "100%", maxWidth: "700px", margin: "0 auto", minHeight: "400px", maxHeight: "80vh" }}
           onHoverStart={() => setIsSpread(true)}
           onHoverEnd={() => {
             setIsSpread(false);
@@ -311,17 +313,17 @@ export default function Stack() {
               initial="stacked"
               animate={isSpread ? "spread" : "stacked"}
               transition={{
-                duration: shouldReduceMotion ? 0 : 0.7,
+                duration: shouldReduceMotion ? 0 : 0.35,
                 ease: easeOutExpo,
-                delay: isSpread ? index * 0.08 : 0,
+                delay: isSpread ? index * 0.04 : 0,
               }}
               whileHover={
                 isSpread && !shouldReduceMotion
                   ? {
-                      y: -30,
-                      scale: 1.08,
+                      y: -20,
+                      scale: 1.05,
                       zIndex: 100,
-                      transition: { duration: 0.2 },
+                      transition: { duration: 0.15, ease: "easeOut" },
                     }
                   : undefined
               }
@@ -381,12 +383,12 @@ export default function Stack() {
                 <div className="relative h-full flex flex-col justify-between p-5">
                   {/* Icon */}
                   <motion.div
-                    className="text-4xl mt-8"
+                    className="text-4xl mt-8 will-change-transform"
                     animate={{
-                      scale: activeCard === index ? 1.15 : 1,
-                      y: activeCard === index ? -5 : 0,
+                      scale: activeCard === index ? 1.1 : 1,
+                      y: activeCard === index ? -3 : 0,
                     }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
                     style={{ color: "#a855f7" }}
                   >
                     {card.icon}
@@ -404,13 +406,13 @@ export default function Stack() {
                       {card.title}
                     </motion.h3>
 
-                    <AnimatePresence>
+                    <AnimatePresence mode="wait">
                       {activeCard === index && (
                         <motion.p
-                          initial={{ opacity: 0, y: 10 }}
+                          initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.2 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          transition={{ duration: 0.12, ease: "easeOut" }}
                           className="text-xs leading-relaxed mb-3"
                           style={{
                             fontFamily: "var(--font-onest)",
@@ -446,11 +448,11 @@ export default function Stack() {
 
                     {/* Violet line accent */}
                     <motion.div
-                      className="mt-4 h-0.5 rounded-full"
+                      className="mt-4 h-0.5 rounded-full will-change-transform"
                       style={{ backgroundColor: "#a855f7" }}
                       initial={{ width: "20%" }}
                       animate={{ width: activeCard === index ? "100%" : "30%" }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
                     />
                   </div>
                 </div>
@@ -467,7 +469,7 @@ export default function Stack() {
             color: "rgba(255,255,255,0.25)",
           }}
           animate={{ opacity: isSpread ? 0 : 1 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
         >
           {lang === "pt" ? "Hover para interagir" : "Hover to interact"}
         </motion.p>

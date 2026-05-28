@@ -7,30 +7,38 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Stack from "@/components/Stack";
-import WorkHorizontal from "@/components/WorkHorizontal";
+import { FeaturesGrid } from "@/components/ui/features-grid";
 import About from "@/components/About";
 import Expertise from "@/components/Expertise";
+import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollBg from "@/components/ScrollBg";
 import LoadingScreen from "@/components/LoadingScreen";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
-// Visual Effects
-import { InteractiveParticles } from "@/components/effects/Particles";
-
-// Three.js/R3F — loaded only on the client, excluded from SSR bundle
-const ScrollIntoCard = dynamic(() => import("@/components/ScrollIntoCard"), {
+// Heavy components - lazy loaded with loading states
+const WorkHorizontal = dynamic(() => import("@/components/WorkHorizontal"), {
+  loading: () => (
+    <div className="h-screen bg-[#e4e4f0] flex items-center justify-center">
+      <div className="animate-pulse text-violet/40 font-mono text-sm">Carregando projetos...</div>
+    </div>
+  ),
   ssr: false,
 });
 
+const InteractiveParticles = dynamic(
+  () => import("@/components/effects/Particles").then(mod => ({ default: mod.InteractiveParticles })),
+  { ssr: false }
+);
 
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-
     if (searchParams.has("e2e")) {
       setIsLoading(false);
     }
@@ -41,31 +49,26 @@ export default function Home() {
       {/* Loading Screen */}
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
       
-      {/* Global Visual Effects */}
-      {!isLoading && <InteractiveParticles />}
+      {/* Global Visual Effects - disable on mobile */}
+      {!isLoading && !isMobile && <InteractiveParticles />}
       
       <ScrollBg />
       <Nav />
       
-      {/* lg:ml-[60px] accounts for the fixed sidebar once desktop layout activates */}
       <main id="main-content" className="lg:ml-[60px]">
         <Hero />
-        
-        {/* ScrollIntoCard: sticky 3D animation — desktop only, not usable on touch */}
-        <div className="hidden lg:block">
-          <ScrollIntoCard />
-        </div>
-        
-        {/* Work com scroll horizontal — sticky section */}
+
+        {/* Work section - lazy loaded */}
         <WorkHorizontal />
         
-        {/* z-20 garante que estas seções ficam acima do panel fixed do ScrollIntoCard (z-10)
-            — conforme o usuário scrolla, elas cobrem o card naturalmente */}
+        {/* Other sections */}
         <div className="relative" style={{ zIndex: 20 }}>
           <Services />
-          <Stack /> {/* NOVO: Deck interativo de habilidades */}
+          <Stack />
+          <FeaturesGrid />
           <About />
           <Expertise />
+          <Testimonials />
           <Contact />
         </div>
       </main>

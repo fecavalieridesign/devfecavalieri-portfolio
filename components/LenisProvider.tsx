@@ -3,6 +3,10 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { MotionConfig } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -19,19 +23,25 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     // pois bloqueia scroll touch completamente.
     document.documentElement.style.overflowX = "clip";
 
-    // Expose scroll velocity as CSS variable — used for velocity skew
-    lenis.on("scroll", ({ velocity }: { velocity: number }) => {
+    // Expose scroll data as CSS variables — velocity for skew, progress for parallax
+    lenis.on("scroll", ({ scroll, limit, velocity }: { scroll: number; limit: number; velocity: number }) => {
       const v = Math.max(-14, Math.min(14, velocity));
       document.documentElement.style.setProperty("--lenis-velocity", String(v));
+      document.documentElement.style.setProperty(
+        "--scroll-progress",
+        String(limit > 0 ? scroll / limit : 0)
+      );
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    // Connect Lenis scroll events to GSAP ScrollTrigger so they stay in sync
+    lenis.on("scroll", ScrollTrigger.update);
+
+    // Drive Lenis via GSAP's ticker so both share the same RAF tick
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
       lenis.destroy();
       document.documentElement.style.removeProperty("overflow-x");
     };

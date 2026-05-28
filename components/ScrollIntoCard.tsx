@@ -1,11 +1,8 @@
 "use client";
 
 // ScrollIntoCard — Zentry "clip-path card" effect
-// • Fundo claro (lavanda) + card dark que expande de inset(8% 24%) → inset(0%)
-// • Card tem tilt 3D que se retifica conforme expande
-// • Dentro do card: orb violeta + mão CSS emergindo de baixo
-// • Título no fundo claro que sobe e some enquanto o card expande
-// • position:fixed (não sticky) → 100% compatível com Lenis v1
+// BG_VARIANT: 1 = Aurora blobs | 2 = Star field | 5 = Topographic lines
+const BG_VARIANT: 1 | 2 | 5 = 1;
 
 import { useRef, useEffect } from "react";
 import {
@@ -15,6 +12,139 @@ import {
   useMotionTemplate,
   useReducedMotion,
 } from "framer-motion";
+
+// ── Background variants ────────────────────────────────────────────────────────
+
+function BgAurora() {
+  return (
+    <>
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #06000f 0%, #0d0025 50%, #04000e 100%)" }} />
+      {/* Blob 1 — violet, large, center-top */}
+      <div className="absolute pointer-events-none" style={{
+        width: "65vw", height: "65vw", maxWidth: 700, maxHeight: 700,
+        top: "-15%", left: "20%",
+        background: "radial-gradient(circle at 40% 40%, rgba(168,85,247,0.45) 0%, rgba(139,60,220,0.25) 35%, transparent 70%)",
+        filter: "blur(60px)",
+        animation: "blob-morph 9s ease-in-out infinite",
+        borderRadius: "50%",
+      }} />
+      {/* Blob 2 — indigo, medium, bottom-left */}
+      <div className="absolute pointer-events-none" style={{
+        width: "45vw", height: "45vw", maxWidth: 500, maxHeight: 500,
+        bottom: "0%", left: "-10%",
+        background: "radial-gradient(circle at 60% 50%, rgba(99,60,220,0.35) 0%, rgba(80,30,180,0.18) 45%, transparent 70%)",
+        filter: "blur(50px)",
+        animation: "blob-morph 12s ease-in-out infinite reverse",
+        borderRadius: "50%",
+      }} />
+      {/* Blob 3 — purple-pink, small, right */}
+      <div className="absolute pointer-events-none" style={{
+        width: "30vw", height: "30vw", maxWidth: 350, maxHeight: 350,
+        top: "30%", right: "-5%",
+        background: "radial-gradient(circle at 50% 50%, rgba(192,100,255,0.3) 0%, rgba(168,85,247,0.12) 50%, transparent 70%)",
+        filter: "blur(40px)",
+        animation: "blob-morph 7s ease-in-out infinite",
+        animationDelay: "2s",
+        borderRadius: "50%",
+      }} />
+      {/* Vignette */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, rgba(4,0,14,0.7) 100%)",
+      }} />
+    </>
+  );
+}
+
+function BgStarField() {
+  const stars = Array.from({ length: 120 }, (_, i) => ({
+    x: ((i * 137.508) % 100),
+    y: ((i * 97.31 + 13) % 100),
+    r: i % 5 === 0 ? 1.5 : i % 3 === 0 ? 1.2 : 0.8,
+    delay: `${(i * 0.17) % 4}s`,
+    dur: `${2.5 + (i % 5) * 0.6}s`,
+  }));
+  return (
+    <>
+      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, #03000d 0%, #06001a 60%, #02000b 100%)" }} />
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "radial-gradient(ellipse 55% 45% at 50% 30%, rgba(168,85,247,0.12) 0%, transparent 70%)",
+      }} />
+      {/* Stars */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.85 }}>
+        {stars.map((s, i) => (
+          <circle key={i} cx={`${s.x}%`} cy={`${s.y}%`} r={s.r} fill="white">
+            <animate attributeName="opacity" values="0.15;0.9;0.15" dur={s.dur} begin={s.delay} repeatCount="indefinite" />
+          </circle>
+        ))}
+      </svg>
+      {/* Subtle horizontal glow bands */}
+      <div className="absolute pointer-events-none" style={{
+        top: "25%", left: 0, right: 0, height: "1px",
+        background: "linear-gradient(90deg, transparent, rgba(168,85,247,0.15) 50%, transparent)",
+      }} />
+      <div className="absolute pointer-events-none" style={{
+        top: "60%", left: 0, right: 0, height: "1px",
+        background: "linear-gradient(90deg, transparent, rgba(168,85,247,0.1) 50%, transparent)",
+      }} />
+      {/* Vignette */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "radial-gradient(ellipse 90% 90% at 50% 50%, transparent 40%, rgba(3,0,13,0.8) 100%)",
+      }} />
+    </>
+  );
+}
+
+function BgTopographic() {
+  // Contour lines — SVG paths at different y offsets, staggered
+  const lines = [
+    "M-100,180 C100,120 200,240 400,180 C600,120 700,200 900,160 C1100,120 1300,200 1500,160 L1500,600 L-100,600 Z",
+    "M-100,240 C80,180 220,300 420,240 C620,180 720,260 920,220 C1120,180 1320,250 1500,210 L1500,600 L-100,600 Z",
+    "M-100,300 C120,240 200,340 450,290 C650,240 750,310 950,270 C1150,230 1350,290 1500,260 L1500,600 L-100,600 Z",
+    "M-100,360 C100,300 250,390 480,345 C680,300 780,370 980,330 C1180,290 1380,345 1500,310 L1500,600 L-100,600 Z",
+    "M-100,420 C130,370 270,440 500,400 C700,360 800,420 1000,385 C1200,350 1380,400 1500,370 L1500,600 L-100,600 Z",
+    "M-100,480 C150,440 280,490 520,455 C720,420 820,470 1020,440 C1220,410 1400,455 1500,430 L1500,600 L-100,600 Z",
+  ];
+  return (
+    <>
+      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, #04000e 0%, #080018 55%, #030009 100%)" }} />
+      {/* Topo lines */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMid slice" style={{ opacity: 0.7 }}>
+        {lines.map((d, i) => (
+          <path
+            key={i}
+            d={d}
+            fill="none"
+            stroke="rgba(168,85,247,1)"
+            strokeWidth="0.7"
+            style={{
+              opacity: 0.12 + i * 0.04,
+              animation: `topo-drift ${6 + i * 0.8}s ease-in-out infinite alternate`,
+              animationDelay: `${i * 0.5}s`,
+            }}
+          />
+        ))}
+        {/* Filled areas with very low opacity */}
+        {lines.slice(0, 3).map((d, i) => (
+          <path
+            key={`fill-${i}`}
+            d={d}
+            fill={`rgba(168,85,247,${0.015 + i * 0.008})`}
+            stroke="none"
+          />
+        ))}
+      </svg>
+      {/* Ambient top glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "radial-gradient(ellipse 60% 50% at 50% 20%, rgba(168,85,247,0.1) 0%, transparent 70%)",
+      }} />
+      {/* Vignette */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "radial-gradient(ellipse 90% 90% at 50% 50%, transparent 35%, rgba(4,0,14,0.75) 100%)",
+      }} />
+    </>
+  );
+}
 
 export default function ScrollIntoCard() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -147,44 +277,13 @@ export default function ScrollIntoCard() {
                 : { clipPath, rotateX, rotateY }
             }
           >
-            {/* Fundo escuro do card */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(circle at 52% 12%, rgba(255,255,255,0.04), transparent 22%)," +
-                  "linear-gradient(180deg, #03000d 0%, #07001c 100%)",
-              }}
-            />
+            {/* Background variant — trocar BG_VARIANT no topo do arquivo */}
+            {BG_VARIANT === 1 && <BgAurora />}
+            {BG_VARIANT === 2 && <BgStarField />}
+            {BG_VARIANT === 5 && <BgTopographic />}
 
-            {/* Grid mesh */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(168,85,247,0.06) 1px, transparent 1px)," +
-                  "linear-gradient(90deg, rgba(168,85,247,0.06) 1px, transparent 1px)",
-                backgroundSize: "2rem 2rem",
-                opacity: 0.25,
-                mixBlendMode: "screen",
-              }}
-            />
-
-            {/* Linha horizontal sutil */}
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                top: "2.5rem",
-                left: "6%",
-                right: "6%",
-                height: "1px",
-                background:
-                  "linear-gradient(90deg, transparent, rgba(168,85,247,0.28), transparent)",
-              }}
-            />
-
-            {/* ORB violeta — cresce conforme o scroll */}
-            <motion.div
+            {/* ORB violeta — temporariamente oculto para comparar fundos */}
+            {/* <motion.div
               className="absolute left-1/2 -translate-x-1/2"
               style={
                 reduceMotion
@@ -203,7 +302,7 @@ export default function ScrollIntoCard() {
                   boxShadow: "0 0 140px rgba(168,85,247,0.32)",
                 }}
               />
-            </motion.div>
+            </motion.div> */}
 
             {/* Strata atmospheric lines */}
             <div

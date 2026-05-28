@@ -4,36 +4,33 @@
 // Categories styled as "// COMMENT" headers + skill tags
 
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { E } from "@/lib/easing";
 import SectionLabel from "@/components/ui/SectionLabel";
+import { LineReveal } from "@/components/animations";
+import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
+import { SpotlightSection } from "@/components/effects/SpotlightSection";
 
 export default function Expertise() {
   const { t } = useLanguage();
-  const [marquePaused, setMarquePaused] = useState(false);
 
   return (
+    <SpotlightSection>
     <section id="expertise" className="relative py-24 md:py-36 border-t border-white/[0.05]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
 
         <SectionLabel label="[005_SKILLS]" />
 
-        {/* Heading */}
-        <motion.div
-          initial={{ clipPath: "inset(100% 0 0 0)" }}
-          whileInView={{ clipPath: "inset(0% 0 0 0)" }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.9, ease: E }}
-          className="mb-14 md:mb-16"
-        >
+        {/* Heading — LineReveal aplicado */}
+        <LineReveal delay={0.1} className="mb-14 md:mb-16">
           <h2
             className="font-display font-extrabold uppercase text-white leading-[0.88]"
             style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)", letterSpacing: "-0.04em" }}
           >
-            {t.expertise.label}
+            <AnimatedHeading text={t.expertise.label} delay={600} />
           </h2>
-        </motion.div>
+        </LineReveal>
 
         {/* Categories — terminal comment style */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
@@ -70,32 +67,21 @@ export default function Expertise() {
           ))}
         </div>
 
-        {/* Marquee — Inversa pattern — tech stack infinite scroll */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: E, delay: 0.3 }}
-          className="mt-16 md:mt-20 overflow-hidden border-t border-b border-white/[0.05] py-4"
-        >
-          <div
-            className="flex gap-0 whitespace-nowrap"
-            style={{ animation: "marquee 22s linear infinite", animationPlayState: marquePaused ? "paused" : "running" }}
-            onMouseEnter={() => setMarquePaused(true)}
-            onMouseLeave={() => setMarquePaused(false)}
-          >
-            {[...Array(2)].flatMap((_, outerIdx) =>
-              ["Next.js 16", "React 19", "TypeScript", "Tailwind v4", "Framer Motion",
-               "Node.js", "Figma", "REST APIs", "Suporte Técnico", "Customer Success", "SQL", "Git"].map((tech, i) => (
-                <span key={`${outerIdx}-${i}`} className="font-mono text-[9px] text-white/20 tracking-[0.15em] uppercase px-6 flex items-center gap-2">
-                  <span className="w-1 h-1 rounded-full bg-violet/40 flex-shrink-0" />
-                  {tech}
-                </span>
-              ))
-            )}
-          </div>
-        </motion.div>
+      </div>
+      
+      {/* Marquee de tecnologias — InfiniteTextMarquee com cursor tooltip */}
+      <div className="mt-16 md:mt-24 border-t border-b border-white/[0.05] py-2 overflow-hidden">
+        <InfiniteTextMarquee
+          text="REACT · NEXT.JS · TYPESCRIPT · TAILWIND · FRAMER MOTION · NODE.JS · GITHUB · VERCEL"
+          speed={40}
+          fontSize="clamp(1rem, 2.5vw, 1.6rem)"
+          textColor="rgba(255,255,255,0.18)"
+          hoverColor="#a855f7"
+          tooltipText="Let's build something"
+          link="#contact"
+        />
       </div>
     </section>
+    </SpotlightSection>
   );
 }

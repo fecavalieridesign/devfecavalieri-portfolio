@@ -9,6 +9,8 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { E } from "@/lib/easing";
 import SectionLabel from "@/components/ui/SectionLabel";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
+import { SpotlightSection } from "@/components/effects/SpotlightSection";
 
 function parseNum(v: string): { n: number; suffix: string } {
   const m = v.match(/^(\d+(?:\.\d+)?)(.*)$/);
@@ -68,6 +70,7 @@ export default function About() {
   const rightY = useTransform(scrollYProgress, [0, 1], ["-3%", "3%"]);
 
   return (
+    <SpotlightSection>
     <section id="about" ref={ref} className="relative py-24 md:py-36 border-t border-white/[0.05] overflow-hidden">
       {/* Animated CSS blob — Zentry organic shape */}
       <div
@@ -118,7 +121,7 @@ export default function About() {
                   className="font-display font-extrabold uppercase text-white leading-[0.88]"
                   style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", letterSpacing: "-0.04em" }}
                 >
-                  {t.about.heading1}
+                  <AnimatedHeading text={t.about.heading1} delay={500} />
                 </h2>
                 <h2
                   className="font-display font-extrabold uppercase leading-[0.88]"
@@ -129,7 +132,7 @@ export default function About() {
                     color: "transparent",
                   }}
                 >
-                  {t.about.heading2}
+                  <AnimatedHeading text={t.about.heading2} delay={700} />
                 </h2>
               </motion.div>
             </div>
@@ -170,5 +173,6 @@ export default function About() {
         </div>
       </div>
     </section>
+    </SpotlightSection>
   );
 }

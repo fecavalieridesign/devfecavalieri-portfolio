@@ -9,6 +9,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useTilt } from "@/hooks/useTilt";
 import { E } from "@/lib/easing";
 import SectionLabel from "@/components/ui/SectionLabel";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
+import { SpotlightSection } from "@/components/effects/SpotlightSection";
 
 // ── Card visuals ──────────────────────────────────────────────
 
@@ -420,6 +422,7 @@ export default function Services() {
   const { t } = useLanguage();
 
   return (
+    <SpotlightSection>
     <section id="services" className="relative py-16 sm:py-20 md:py-36 border-t border-white/[0.05]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
 
@@ -437,7 +440,7 @@ export default function Services() {
             className="font-display font-extrabold uppercase text-white leading-[0.88]"
             style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)", letterSpacing: "-0.04em" }}
           >
-            {t.services.label}
+            <AnimatedHeading text={t.services.label} delay={600} />
           </h2>
         </motion.div>
 
@@ -452,5 +455,6 @@ export default function Services() {
         </div>
       </div>
     </section>
+    </SpotlightSection>
   );
 }

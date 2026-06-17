@@ -16,6 +16,7 @@ const pt = {
     description:
       "Desenvolvo sites, aplicações web e soluções com Inteligência Artificial. Especialista em criar experiências digitais que convertem.",
     cta: "Ver trabalhos",
+    ctaBack: "Bora criar",
     secondary: "Entrar em contato",
   },
   statement: {
@@ -147,6 +148,7 @@ const en: typeof pt = {
     description:
       "I develop websites, web applications and AI-powered solutions. Specialist in creating digital experiences that convert.",
     cta: "View work",
+    ctaBack: "Let's build",
     secondary: "Get in touch",
   },
   statement: {

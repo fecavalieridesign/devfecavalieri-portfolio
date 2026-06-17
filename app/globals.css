@@ -564,3 +564,209 @@ body::after {
     width: min(88vw, 26rem);
   }
 }
+
+/* ============================================================
+   Datacrazy-inspired buttons (skill award-winning-animations v1.1)
+   Receita 13 (FlipButton) + 15 (GradientGlassButton). Tema violet.
+   ============================================================ */
+
+/* --- Receita 13: FlipButton — flip 3D de texto + shine + fill --- */
+.flip-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 100px;
+  min-height: 46px;
+  padding: 0 36px;
+  z-index: 1;
+  cursor: pointer;
+  color: #fff;
+  border: 1px solid transparent;
+  text-decoration: none;
+  background: linear-gradient(92deg, #a855f7 -11%, #7c3aed 101%);
+  transition: border-color 0.45s, transform 0.2s, box-shadow 0.3s;
+}
+.flip-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.28);
+  border-color: rgba(216, 180, 254, 0.5);
+}
+.flip-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+.flip-btn__fill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 100px;
+  background: #0a0a18;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+  transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1), height 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.flip-btn:hover .flip-btn__fill { width: 100%; height: 100%; }
+.flip-btn__shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transition: left 0.7s 0.2s;
+}
+.flip-btn:hover .flip-btn__shine { left: 130%; }
+.flip-btn__text {
+  position: relative;
+  z-index: 3;
+  display: inline-block;
+  perspective: 600px;
+  height: 1.4em;
+  line-height: 1.4em;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.flip-btn__ghost { visibility: hidden; white-space: nowrap; }
+.flip-btn__front,
+.flip-btn__back {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  white-space: nowrap;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  color: #fff;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s;
+}
+.flip-btn__front { transform: translateX(-50%) rotateX(0deg); }
+.flip-btn__back { transform: translateX(-50%) rotateX(-90deg) translateY(0.7em); opacity: 0; }
+.flip-btn:hover .flip-btn__front { transform: translateX(-50%) rotateX(90deg) translateY(-0.7em); opacity: 0; }
+.flip-btn:hover .flip-btn__back { transform: translateX(-50%) rotateX(0deg); opacity: 1; }
+
+/* --- Receita 15: GradientGlassButton — borda gradiente + texto gradiente --- */
+.glass-grad-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 46px;
+  padding: 0 28px;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 100px;
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.3s, color 0.3s;
+  z-index: 1;
+}
+.glass-grad-btn:hover { transform: scale(1.03); color: #fff; }
+.glass-grad-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 100px;
+  padding: 1px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(135deg, #a855f7, #c32bad, #ff6a00);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+.glass-grad-btn:hover::before { opacity: 1; }
+.glass-grad-btn .text { position: relative; z-index: 2; transition: 0.3s; }
+.glass-grad-btn:hover .text {
+  background-image: linear-gradient(120deg, #a855f7 18%, #b754eb 56%, #f13b5a 76%, #f44a0f 95%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-btn__fill, .flip-btn__shine, .flip-btn__front, .flip-btn__back,
+  .glass-grad-btn, .glass-grad-btn::before { transition: none; }
+}
+
+/* ============================================================
+   GlowCard — borda glow violet segue cursor (Aceternity glowing-effect)
+   Usado na seção Testimonials. Marquee horizontal.
+   ============================================================ */
+.glow-card {
+  position: relative;
+  border-radius: 16px;
+  padding: 1px; /* espessura da borda glow */
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+/* camada da borda gradiente radial centrada no cursor (--mx/--my) */
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    180px circle at var(--mx, -200px) var(--my, -200px),
+    rgba(168, 85, 247, 0.9),
+    rgba(168, 85, 247, 0.25) 35%,
+    transparent 65%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.glow-card:hover::before { opacity: 1; }
+/* glow interno sutil seguindo o cursor */
+.glow-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    240px circle at var(--mx, -200px) var(--my, -200px),
+    rgba(168, 85, 247, 0.10),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.glow-card:hover::after { opacity: 1; }
+.glow-card__inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  border-radius: 15px;
+  padding: 1.5rem;
+  background: #0a0a0f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-card::before, .glow-card::after { transition: none; }
+}

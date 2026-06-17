@@ -8,3 +8,6 @@ export { CustomCursor } from "./CustomCursor";
 export { Marquee } from "./Marquee";
 export { RippleButton } from "./RippleButton";
 export { default as ImageReveal } from "./ImageReveal";
+export { FlipButton } from "./FlipButton";
+export { GradientGlassButton } from "./GradientGlassButton";
+export { PerspectiveScroll } from "./PerspectiveScroll";

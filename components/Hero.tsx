@@ -11,6 +11,8 @@ import {
 } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { E } from "@/lib/easing";
+import { FlipButton } from "@/components/animations/FlipButton";
+import { GradientGlassButton } from "@/components/animations/GradientGlassButton";
 
 const BG_VIDEO = "/hero-bg.mp4";
 
@@ -261,29 +263,15 @@ export default function Hero() {
                   transition={{ duration: 0.5, ease: E, delay: 3.8 }}
                   className="flex flex-wrap gap-3"
                 >
-                  {/* Primary CTA — amber original */}
-                  <a
+                  {/* Primary CTA — FlipButton 3D (Datacrazy, receita 13) */}
+                  <FlipButton
                     href="#work"
-                    className="group relative inline-flex items-center px-6 py-2.5 overflow-hidden rounded-full font-mono text-[10px] tracking-[0.15em] uppercase font-bold text-black active:scale-[0.97] transition-transform duration-100"
-                  >
-                    <div
-                      className="absolute inset-0 rounded-[inherit] group-hover:scale-x-0 transition-transform duration-400 origin-right"
-                      style={{ background: AMBER_HEX }}
-                    />
-                    <div
-                      className="absolute inset-0 rounded-[inherit] group-hover:scale-x-100 scale-x-0 transition-transform duration-400 origin-left"
-                      style={{ border: `1px solid ${AMBER_HEX}` }}
-                    />
-                    <span className="relative transition-colors duration-400 group-hover:text-[#c8956c]">
-                      {t.hero.cta}
-                    </span>
-                  </a>
+                    front={t.hero.cta}
+                    back={t.hero.ctaBack}
+                  />
 
-                  {/* Secondary CTA — liquid glass */}
-                  <a
-                    href="#contact"
-                    className="liquid-glass inline-flex items-center gap-2 px-6 py-2.5 font-mono text-[10px] text-white/60 hover:text-white transition-colors duration-300 tracking-[0.15em] uppercase rounded-full"
-                  >
+                  {/* Secondary CTA — GradientGlassButton (Datacrazy, receita 15) */}
+                  <GradientGlassButton href="#contact">
                     {t.hero.secondary}
                     <motion.span
                       animate={{ x: [0, 3, 0] }}
@@ -291,7 +279,7 @@ export default function Hero() {
                     >
                       →
                     </motion.span>
-                  </a>
+                  </GradientGlassButton>
                 </motion.div>
               </div>
             </div>

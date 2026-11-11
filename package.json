@@ -11,6 +11,8 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@lucasmarkes/hairline": "^0.5.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@types/three": "^0.183.1",

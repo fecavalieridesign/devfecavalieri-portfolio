@@ -1,28 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo_Black, Onest, Space_Mono } from "next/font/google";
-import LenisProvider from "@/components/LenisProvider";
-import Loader from "@/components/Loader";
-import { CustomCursor } from "@/components/animations";
-import "./globals.css";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
+import "./v4.css";
 
-const archivoBlack = Archivo_Black({
-  variable: "--font-archivo-black",
+const display = Geist({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400"],
   display: "swap",
 });
 
-const onest = Onest({
-  variable: "--font-onest",
+const serif = Newsreader({
+  variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  style: "italic",
+  axes: ["opsz"],
   display: "swap",
 });
 
-const spaceMono = Space_Mono({
-  variable: "--font-space-mono",
+const mono = Geist_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -99,7 +95,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   other: {
-    "theme-color": "#000000",
+    "theme-color": "#e8e5df",
   },
 };
 
@@ -128,30 +124,25 @@ const jsonLd = {
   ],
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#e8e5df",
+};
+
+// Marca que há JS e movimento permitido antes da primeira pintura,
+// para a entrada do hero não piscar.
+const boot =
+  "if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js')";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" className={`${display.variable} ${serif.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
-        {/* Preload hero poster as LCP candidate — create /public/hero-poster.jpg from a frame of the hero video */}
-        <link rel="preload" as="image" href="/hero-poster.jpg" fetchPriority="high" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: boot }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body className={`${archivoBlack.variable} ${onest.variable} ${spaceMono.variable} antialiased`}>
-        {/* Skip to main content — WCAG 2.4.1 */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-violet focus:text-black focus:font-mono focus:text-xs focus:tracking-widest focus:uppercase"
-        >
-          Skip to main content
-        </a>
-        <LenisProvider>
-          <Loader />
-          {children}
-        </LenisProvider>
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

@@ -1,11 +1,11 @@
 {
   "name": "Felipe Cavalieri — Web Developer",
   "short_name": "Felipe Cavalieri",
-  "description": "Portfolio of Felipe Cavalieri Silveira — Web Developer & Technical Support",
+  "description": "Felipe Cavalieri — sites, sistemas e agentes de IA",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#e8e5df",
+  "theme_color": "#e8e5df",
   "orientation": "portrait-primary",
   "icons": [
     {

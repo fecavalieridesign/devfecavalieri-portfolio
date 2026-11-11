@@ -27,11 +27,11 @@ const BASE_URL = "https://fecavalieri.dev";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Felipe Cavalieri — Web Developer & IA",
+    default: "Felipe Cavalieri — Sites, sistemas e agentes de IA",
     template: "%s | Felipe Cavalieri",
   },
   description:
-    "Felipe Cavalieri — desenvolvedor web especializado em React e Next.js. Crio sites, landing pages e soluções com Inteligência Artificial que convertem. 4+ anos de experiência.",
+    "Desenvolvedor web em Sorocaba, SP. Construo sites, sistemas internos e agentes de IA para WhatsApp, do rascunho ao deploy.",
   keywords: [
     "Felipe Cavalieri",
     "Web Developer",
@@ -43,7 +43,11 @@ export const metadata: Metadata = {
     "Inteligência Artificial",
     "Automação",
     "Landing Pages",
-    "Chatbots",
+    "Sistemas Web",
+    "Agente de WhatsApp",
+    "three.js",
+    "GSAP",
+    "Sorocaba",
   ],
   authors: [{ name: "Felipe Cavalieri Silveira", url: BASE_URL }],
   creator: "Felipe Cavalieri Silveira",
@@ -53,23 +57,23 @@ export const metadata: Metadata = {
     alternateLocale: "en_US",
     url: BASE_URL,
     siteName: "Felipe Cavalieri",
-    title: "Felipe Cavalieri — Web Developer & IA",
+    title: "Felipe Cavalieri — Sites, sistemas e agentes de IA",
     description:
-      "Desenvolvedor web especializado em React e Next.js. Sites, landing pages e soluções com IA que convertem. 4+ anos de experiência.",
+      "Desenvolvedor web em Sorocaba, SP. Construo sites, sistemas internos e agentes de IA para WhatsApp, do rascunho ao deploy.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Felipe Cavalieri — Web Developer & IA",
+        alt: "Felipe Cavalieri — Sites, sistemas e agentes de IA",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Felipe Cavalieri — Web Developer & IA",
+    title: "Felipe Cavalieri — Sites, sistemas e agentes de IA",
     description:
-      "Desenvolvedor web especializado em React e Next.js. Sites, landing pages e soluções com IA que convertem.",
+      "Desenvolvedor web em Sorocaba, SP. Construo sites, sistemas internos e agentes de IA para WhatsApp, do rascunho ao deploy.",
     images: ["/og-image.png"],
     creator: "@fecavalieri",
   },
@@ -106,7 +110,7 @@ const jsonLd = {
   url: BASE_URL,
   jobTitle: "Web Developer & AI Specialist",
   description:
-    "Web Developer specializing in React and Next.js, building websites, landing pages and AI-powered solutions.",
+    "Web developer based in Sorocaba, Brazil, building websites, internal systems and AI agents for WhatsApp.",
   email: "devfecavalieri@gmail.com",
   sameAs: [
     "https://github.com/fecavalieridesign",
@@ -117,10 +121,11 @@ const jsonLd = {
     "Next.js",
     "TypeScript",
     "Tailwind CSS",
-    "Framer Motion",
+    "three.js",
+    "GSAP",
     "Artificial Intelligence",
     "Automation",
-    "OpenAI",
+    "Claude API",
   ],
 };
 

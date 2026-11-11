@@ -97,26 +97,6 @@ em {
   pointer-events: none;
 }
 
-.hud {
-  position: fixed;
-  left: var(--gutter);
-  bottom: 1rem;
-  z-index: 40;
-  display: flex;
-  gap: 1.1rem;
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  color: var(--ink-2);
-  font-variant-numeric: tabular-nums;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-}
-.hud b {
-  font-weight: 500;
-  color: var(--ink);
-}
-
 /* ── nav ── */
 .nav {
   position: fixed;
@@ -640,21 +620,7 @@ section {
     position: static;
     text-align: center;
   }
-  .hud {
-    padding: 0.3rem 0.7rem;
-    border-radius: 99px;
-    background: rgba(234, 231, 225, 0.86);
-    mix-blend-mode: normal;
-    left: 0.6rem;
-    bottom: 0.6rem;
-  }
-  .foot {
-    padding-bottom: 4rem;
-  }
   .nav-links a:not(.nav-cta) {
-    display: none;
-  }
-  .hud .wide {
     display: none;
   }
 }

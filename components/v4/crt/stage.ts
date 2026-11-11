@@ -298,8 +298,6 @@ export function createStage(canvas: HTMLCanvasElement, reduced: boolean) {
 
   let raf = 0;
   let last = performance.now();
-  let frames = 0;
-  let statT = last;
   let running = false;
 
   function frame(now: number) {
@@ -332,18 +330,6 @@ export function createStage(canvas: HTMLCanvasElement, reduced: boolean) {
       if (screen.draw(bus.channel.get(), now)) screenTex.needsUpdate = true;
       apply(now / 1000);
       renderer.render(scene, camera);
-    }
-
-    frames++;
-    if (now - statT >= 500) {
-      bus.stats.set({
-        fps: Math.round((frames * 1000) / (now - statT)),
-        calls: hidden ? 0 : renderer.info.render.calls,
-        tris: hidden ? 0 : renderer.info.render.triangles,
-        dpr: renderer.getPixelRatio(),
-      });
-      frames = 0;
-      statT = now;
     }
   }
 

@@ -29,13 +29,10 @@ function signal<T>(initial: T) {
   };
 }
 
-export type Stats = { fps: number; calls: number; tris: number; dpr: number };
-
 export const bus = {
   pose: signal<PoseName>("hero"),
   channel: signal<Channel>(-1),
   power: signal<boolean>(true),
-  stats: signal<Stats>({ fps: 0, calls: 0, tris: 0, dpr: 1 }),
   /** velocidade do scroll (px/frame aprox.), escrita pelo Lenis */
   velocity: 0,
 };

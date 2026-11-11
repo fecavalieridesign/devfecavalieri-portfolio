@@ -168,7 +168,6 @@ export default function Site() {
             <div className="hero-meta hero-in">
               <span className="mono live">Disponível para projetos</span>
               <span className="mono">Sorocaba, SP · Brasil</span>
-              <span className="mono">Portfólio v4 · 2026</span>
             </div>
             <h1 className="hero-title hero-in">
               Sites, sistemas

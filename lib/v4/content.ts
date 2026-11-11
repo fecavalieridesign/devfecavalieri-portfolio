@@ -46,7 +46,7 @@ export const projects: Project[] = [
     desc: "Agente com IA que atende, agenda e lembra pacientes no WhatsApp, mais um painel multi-clínica para a equipe acompanhar cada conversa.",
     stack: ["Next.js", "Supabase", "Claude API", "Fly.io"],
     year: "2026",
-    url: "https://recepcia.com.br",
+    url: "https://recepcia-six.vercel.app",
     bg: "#08090a",
     fg: "#f7f8f8",
   },

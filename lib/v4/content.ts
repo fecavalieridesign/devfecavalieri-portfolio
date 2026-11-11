@@ -42,7 +42,7 @@ export const projects: Project[] = [
     id: "recepcia",
     name: "Recepcia",
     kind: "Produto",
-    title: "Atendimento por WhatsApp para clínicas de estética",
+    title: "Atendimento por WhatsApp para clínicas",
     desc: "Agente com IA que atende, agenda e lembra pacientes no WhatsApp, mais um painel multi-clínica para a equipe acompanhar cada conversa.",
     stack: ["Next.js", "Supabase", "Claude API", "Fly.io"],
     year: "2026",

@@ -282,7 +282,8 @@ export function createStage(canvas: HTMLCanvasElement, reduced: boolean) {
     const bob = reduced ? 0 : Math.sin(t * 0.9) * 0.012;
     rig.position.set((cur.x * worldW) / 2, (cur.y * worldH) / 2 + bob * worldH * 0.5, 0);
     // nunca deixa o monitor passar de ~42% da largura: em tela estreita ele encolhe em vez de invadir o texto
-    const s = mobile ? cur.s : Math.min(cur.s, (0.42 * camera.aspect) / 1.15);
+    // e nunca passa de ~700px de altura: em monitor grande ele para de crescer junto com a tela
+    const s = mobile ? cur.s : Math.min(cur.s, (0.42 * camera.aspect) / 1.15, 630 / window.innerHeight);
     rig.scale.setScalar((s * worldH) / 2.1);
     const vel = THREE.MathUtils.clamp(bus.velocity, -60, 60);
     tilt.rotation.x = cur.rx - pointer.sy * 0.09 + vel * 0.0016;

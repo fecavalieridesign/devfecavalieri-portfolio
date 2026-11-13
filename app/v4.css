@@ -269,6 +269,11 @@ section {
   right: var(--gutter);
   bottom: 1rem;
   text-align: right;
+  transition: opacity 0.35s var(--ease-out);
+}
+.hero-hint.is-gone {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 .js .hero-in {
@@ -469,7 +474,7 @@ section {
   display: inline-flex;
   align-items: center;
   font-weight: 300;
-  font-size: clamp(2.6rem, 8vw, 7rem);
+  font-size: clamp(2.4rem, 5.6vw, 5rem);
   line-height: 1;
   letter-spacing: -0.028em;
   white-space: nowrap;
@@ -631,5 +636,9 @@ section {
   }
   .marquee {
     overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .marquee::-webkit-scrollbar {
+    display: none;
   }
 }

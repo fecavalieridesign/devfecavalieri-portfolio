@@ -53,8 +53,21 @@ export default function Site() {
         });
       });
 
-      // ── só com movimento permitido ──
+      // dica dos botões some assim que o scroll começa (no mobile ela fica abaixo
+      // do monitor, então só some depois de ter passado pela tela)
+      const hint = document.querySelector<HTMLElement>(".hero-hint");
       const mm = gsap.matchMedia();
+      if (hint) {
+        const gone = (self: ScrollTrigger) => hint.classList.toggle("is-gone", self.isActive);
+        mm.add("(min-width: 900px)", () => {
+          ScrollTrigger.create({ start: 24, end: "max", onToggle: gone });
+        });
+        mm.add("(max-width: 899px)", () => {
+          ScrollTrigger.create({ trigger: hint, start: "top 30%", end: "max", onToggle: gone });
+        });
+      }
+
+      // ── só com movimento permitido ──
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         // entrada do hero
         gsap.set(".hero-title", { opacity: 1, animation: "none" });

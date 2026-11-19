@@ -1,0 +1,286 @@
+/* ── /mundo · percurso em miniatura guiado pelo scroll ───────────── */
+
+.mw {
+  /* mesma cor do fundo das cenas geradas, para a borda da imagem sumir */
+  --mw-bg: #ebe3dc;
+  --mx: 0;
+  --my: 0;
+  position: relative;
+  background: var(--mw-bg);
+}
+.mw .nav {
+  background: rgba(235, 227, 220, 0.72);
+}
+
+.mw-track {
+  position: relative;
+  display: block;
+  /* 1 tela + 1,5 tela de scroll por cena seguinte */
+  height: calc(100svh + (var(--n) - 1) * 150svh);
+}
+.mw-anchor {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  top: calc((100% - 100svh) * var(--i) / (var(--n) - 1));
+}
+
+.mw-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--mw-bg);
+}
+
+.mw-sec {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── cena ── */
+.mw-fig {
+  --w: min(118svh, 64vw);
+  position: absolute;
+  left: 61%;
+  top: 50%;
+  width: var(--w);
+  aspect-ratio: 3 / 2;
+  margin-left: calc(var(--w) / -2);
+  margin-top: calc(var(--w) / -3);
+  will-change: transform, opacity, filter;
+}
+.mw-fig img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate3d(calc(var(--mx) * -14px), calc(var(--my) * -10px), 0);
+  transition: transform 0.6s var(--ease-out);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 76%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 76%, transparent 100%);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ── legenda ── */
+.mw-copy {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(3.5rem, 11svh, 7rem);
+  width: min(27rem, 34vw);
+  display: grid;
+  gap: 0.9rem;
+  will-change: transform, opacity;
+}
+.mw-title {
+  font-size: clamp(1.9rem, 3.3vw, 3.1rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 400;
+  text-wrap: balance;
+}
+.mw-body {
+  color: var(--ink-2);
+  font-size: clamp(0.98rem, 1.05vw, 1.08rem);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.mw-copy .cta-row {
+  margin-top: 0.4rem;
+}
+
+/* antes do JS assumir, só a primeira cena aparece */
+@media (prefers-reduced-motion: no-preference) {
+  .mw-sec + .mw-sec .mw-fig,
+  .mw-sec + .mw-sec .mw-copy {
+    opacity: 0;
+  }
+}
+
+/* ── poeira ── */
+.mw-dust {
+  position: absolute;
+  left: 61%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.mw-dust i {
+  position: absolute;
+  left: -0.6vw;
+  top: -0.6vw;
+  width: 1.2vw;
+  height: 1.2vw;
+  min-width: 10px;
+  min-height: 10px;
+  opacity: 0;
+  background: var(--paper-lo);
+  clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+  will-change: transform, opacity;
+}
+.mw-dust i[data-k="1"] {
+  background: #6a52e0;
+}
+.mw-dust i[data-k="2"] {
+  background: #d9cfc3;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+/* ── trilho de cenas ── */
+.mw-rail {
+  position: absolute;
+  right: var(--gutter);
+  top: 50%;
+  z-index: 20;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 0.2rem;
+  justify-items: end;
+}
+.mw-rail a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 1.75rem;
+  padding: 0.25rem 0;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.mw-rail a span {
+  opacity: 0;
+  transform: translateX(6px);
+  transition:
+    opacity 0.3s,
+    transform 0.4s var(--ease-out);
+}
+.mw-rail a::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-2);
+  transition:
+    background 0.3s,
+    border-color 0.3s,
+    transform 0.4s var(--ease-out);
+}
+.mw-rail a:hover span,
+.mw-rail a:focus-visible span,
+.mw-rail a[aria-current] span {
+  opacity: 1;
+  transform: none;
+}
+.mw-rail a[aria-current] {
+  color: var(--ink);
+}
+.mw-rail a[aria-current]::after {
+  background: var(--lav-ink);
+  border-color: var(--lav-ink);
+  transform: scale(1.35);
+}
+
+.mw-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  z-index: 20;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* ── telas estreitas: cena em cima, legenda embaixo ── */
+@media (max-width: 899px) {
+  .mw-fig {
+    --w: min(128vw, 62svh);
+    left: 50%;
+    top: 34%;
+  }
+  .mw-dust {
+    left: 50%;
+    top: 34%;
+  }
+  .mw-copy {
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+    bottom: calc(2.6rem + env(safe-area-inset-bottom, 0px));
+    gap: 0.7rem;
+  }
+  .mw-title {
+    font-size: clamp(1.7rem, 7.4vw, 2.3rem);
+  }
+  .mw-rail {
+    right: 0.6rem;
+    top: 34%;
+  }
+  .mw-rail a span {
+    display: none;
+  }
+  .mw-rail a {
+    min-width: 1.75rem;
+    justify-content: flex-end;
+  }
+  .mw-hint {
+    bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px));
+  }
+  .mw .nav-links a:not(.nav-cta) {
+    display: none;
+  }
+}
+
+/* ── movimento reduzido: vira uma página comum, uma cena embaixo da outra ── */
+@media (prefers-reduced-motion: reduce) {
+  .mw-track {
+    height: auto;
+    padding: 5rem 0 3rem;
+  }
+  .mw-anchor,
+  .mw-dust,
+  .mw-rail,
+  .mw-hint {
+    display: none;
+  }
+  .mw-stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+  .mw-sec {
+    position: relative;
+    inset: auto;
+    pointer-events: auto;
+    display: grid;
+    gap: 1rem;
+    padding: 2rem var(--gutter) 3rem;
+    max-width: 64rem;
+    margin: 0 auto;
+    scroll-margin-top: 4rem;
+  }
+  .mw-fig {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    margin: 0;
+  }
+  .mw-fig img {
+    transform: none;
+    transition: none;
+  }
+  .mw-copy {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    max-width: 34rem;
+  }
+}
